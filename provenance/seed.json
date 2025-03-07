@@ -1,0 +1,923 @@
+{
+    "Pathways": [
+        {
+            "CreativeWork": [
+                {
+                    "schemaVersion": "https://movielabs.com/omc/json/schema/v2.6",
+                    "entityType": "CreativeWork",
+                    "identifier": [
+                      {
+                        "identifierScope": "com.yamdu.app",
+                        "identifierValue": "com.yamdu.app.project.124948"
+                      }
+                    ],
+                    "title": {
+                      "workingTitle": "Pathways"
+                    }
+                  }
+            ],
+            "Asset": [
+                {
+                    "schemaVersion": "https://movielabs.com/omc/json/schema/v2.7",
+                    "entityType": "Asset",
+                    "identifier": [
+                      {
+                        "identifierScope": "etc.ai",
+                        "identifierValue": "2c0c2060-de84-425a-a38c-e05ee77cf3cf"
+                      }
+                    ],
+                    "name": "Pathways",
+                    "description": "Script for Pathways",
+                    "revisionLabel": "PINK",
+                    "AssetSC": {
+                      "schemaVersion": "https://movielabs.com/omc/json/schema/v2.7",
+                      "entityType": "AssetSC",
+                      "identifier": [
+                        {
+                          "identifierScope": "etc.ai",
+                          "identifierValue": "e04ebe0e-751e-4bc4-94f5-6434bd93685b"
+                        }
+                      ],
+                      "structuralType": "digital.document"
+                    },
+                    "assetFC": {
+                      "functionalType": "script"
+                    }
+                }
+            ],
+            "NarrativeScene": [
+                {
+                  "schemaVersion": "https://movielabs.com/omc/json/schema/v2.6",
+                  "entityType": "NarrativeScene",
+                  "identifier": [
+                    {
+                      "identifierScope": "com.yamdu.app",
+                      "identifierValue": "com.yamdu.app.scene.2621283"
+                    }
+                  ],
+                  "name": "1",
+                  "sceneName": {
+                    "altName": "",
+                    "fullName": "1"
+                  },
+                  "description": "The bookshelf of a historian. A sanctuary of memories.",
+                  "sceneNumber": "1",
+                  "slugline": [
+                    {
+                      "text": "INT.",
+                      "title": "SUNSET-INT."
+                    },
+                    {
+                      "text": "SUNSET",
+                      "title": ""
+                    }
+                  ],
+                  "Context": [
+                    {
+                      "schemaVersion": "https://movielabs.com/omc/json/schema/v2.6",
+                      "entityType": "Context",
+                      "identifier": [
+                        {
+                          "identifierScope": "com.yamdu.app",
+                          "identifierValue": "com.yamdu.app.scene.context.2621283"
+                        }
+                      ],
+                      "features": {
+                        "Character": [],
+                        "NarrativeLocation": [
+                          {
+                            "identifier": [
+                              {
+                                "identifierScope": "com.yamdu.app",
+                                "identifierValue": "com.yamdu.app.set.1018951"
+                              }
+                            ]
+                          }
+                        ],
+                        "NarrativeObject": []
+                      },
+                      "has": {
+                        "Asset": []
+                      }
+                    }
+                  ]
+                },
+                {
+                  "schemaVersion": "https://movielabs.com/omc/json/schema/v2.6",
+                  "entityType": "NarrativeScene",
+                  "identifier": [
+                    {
+                      "identifierScope": "com.yamdu.app",
+                      "identifierValue": "com.yamdu.app.scene.2621284"
+                    }
+                  ],
+                  "name": "2",
+                  "sceneName": {
+                    "altName": "",
+                    "fullName": "2"
+                  },
+                  "description": "The shelves are broken. Books and trinkets scattered across  the floor. It’s the aftermath of a BAD FALL.  ",
+                  "sceneNumber": "2",
+                  "slugline": [
+                    {
+                      "text": "INT.",
+                      "title": "DAY-INT."
+                    },
+                    {
+                      "text": "Day",
+                      "title": ""
+                    }
+                  ],
+                  "Context": [
+                    {
+                      "schemaVersion": "https://movielabs.com/omc/json/schema/v2.6",
+                      "entityType": "Context",
+                      "identifier": [
+                        {
+                          "identifierScope": "com.yamdu.app",
+                          "identifierValue": "com.yamdu.app.scene.context.2621284"
+                        }
+                      ],
+                      "features": {
+                        "Character": [
+                          {
+                            "name": "Ma",
+                            "characterName": {
+                              "fullName": "Ma"
+                            },
+                            "description": "",
+                            "entityType": "Character",
+                            "identifier": [
+                              {
+                                "identifierScope": "com.yamdu.app",
+                                "identifierValue": "com.yamdu.app.role.866502"
+                              }
+                            ],
+                            "schemaVersion": "https://movielabs.com/omc/json/schema/v2.6"
+                          },
+                          {
+                            "name": "Isa",
+                            "characterName": {
+                              "fullName": "Isa"
+                            },
+                            "description": "",
+                            "entityType": "Character",
+                            "identifier": [
+                              {
+                                "identifierScope": "com.yamdu.app",
+                                "identifierValue": "com.yamdu.app.role.866503"
+                              }
+                            ],
+                            "schemaVersion": "https://movielabs.com/omc/json/schema/v2.6"
+                          }
+                        ],
+                        "NarrativeLocation": [
+                          {
+                            "identifier": [
+                              {
+                                "identifierScope": "com.yamdu.app",
+                                "identifierValue": "com.yamdu.app.set.1018952"
+                              }
+                            ]
+                          }
+                        ],
+                        "NarrativeObject": []
+                      },
+                      "has": {
+                        "Asset": []
+                      }
+                    }
+                  ]
+                },
+                {
+                  "schemaVersion": "https://movielabs.com/omc/json/schema/v2.6",
+                  "entityType": "NarrativeScene",
+                  "identifier": [
+                    {
+                      "identifierScope": "com.yamdu.app",
+                      "identifierValue": "com.yamdu.app.scene.2621285"
+                    }
+                  ],
+                  "name": "3",
+                  "sceneName": {
+                    "altName": "",
+                    "fullName": "3"
+                  },
+                  "description": "Isa finds herself in the depths of the river valley outside  Abu’s home. But it’s a BAMBOO FOREST, cloaked in mist,  decades before the city sprawl. Time-bending flute still in  Isa’s hand.  ",
+                  "sceneNumber": "3",
+                  "slugline": [
+                    {
+                      "text": "EXT.",
+                      "title": "DAY-EXT."
+                    },
+                    {
+                      "text": "Day",
+                      "title": ""
+                    }
+                  ],
+                  "Context": [
+                    {
+                      "schemaVersion": "https://movielabs.com/omc/json/schema/v2.6",
+                      "entityType": "Context",
+                      "identifier": [
+                        {
+                          "identifierScope": "com.yamdu.app",
+                          "identifierValue": "com.yamdu.app.scene.context.2621285"
+                        }
+                      ],
+                      "features": {
+                        "Character": [
+                          {
+                            "name": "Isa",
+                            "characterName": {
+                              "fullName": "Isa"
+                            },
+                            "description": "",
+                            "entityType": "Character",
+                            "identifier": [
+                              {
+                                "identifierScope": "com.yamdu.app",
+                                "identifierValue": "com.yamdu.app.role.866503"
+                              }
+                            ],
+                            "schemaVersion": "https://movielabs.com/omc/json/schema/v2.6"
+                          },
+                          {
+                            "name": "Freckles",
+                            "characterName": {
+                              "fullName": "Freckles"
+                            },
+                            "description": "",
+                            "entityType": "Character",
+                            "identifier": [
+                              {
+                                "identifierScope": "com.yamdu.app",
+                                "identifierValue": "com.yamdu.app.role.866504"
+                              }
+                            ],
+                            "schemaVersion": "https://movielabs.com/omc/json/schema/v2.6"
+                          },
+                          {
+                            "name": "Young Abu",
+                            "characterName": {
+                              "fullName": "Young Abu"
+                            },
+                            "description": "",
+                            "entityType": "Character",
+                            "identifier": [
+                              {
+                                "identifierScope": "com.yamdu.app",
+                                "identifierValue": "com.yamdu.app.role.866505"
+                              }
+                            ],
+                            "schemaVersion": "https://movielabs.com/omc/json/schema/v2.6"
+                          },
+                          {
+                            "name": "Abu",
+                            "characterName": {
+                              "fullName": "Abu"
+                            },
+                            "description": "",
+                            "entityType": "Character",
+                            "identifier": [
+                              {
+                                "identifierScope": "com.yamdu.app",
+                                "identifierValue": "com.yamdu.app.role.866506"
+                              }
+                            ],
+                            "schemaVersion": "https://movielabs.com/omc/json/schema/v2.6"
+                          }
+                        ],
+                        "NarrativeLocation": [
+                          {
+                            "identifier": [
+                              {
+                                "identifierScope": "com.yamdu.app",
+                                "identifierValue": "com.yamdu.app.set.1018953"
+                              }
+                            ]
+                          }
+                        ],
+                        "NarrativeObject": []
+                      },
+                      "has": {
+                        "Asset": []
+                      }
+                    }
+                  ]
+                },
+                {
+                  "schemaVersion": "https://movielabs.com/omc/json/schema/v2.6",
+                  "entityType": "NarrativeScene",
+                  "identifier": [
+                    {
+                      "identifierScope": "com.yamdu.app",
+                      "identifierValue": "com.yamdu.app.scene.2621286"
+                    }
+                  ],
+                  "name": "4",
+                  "sceneName": {
+                    "altName": "",
+                    "fullName": "4"
+                  },
+                  "description": "The forest clears. Isa chases Abu into a RURAL ANDES TOWN  halfway up snow-capped peaks.  ",
+                  "sceneNumber": "4",
+                  "slugline": [
+                    {
+                      "text": "EXT.",
+                      "title": "DAY-EXT."
+                    },
+                    {
+                      "text": "Day",
+                      "title": ""
+                    }
+                  ],
+                  "Context": [
+                    {
+                      "schemaVersion": "https://movielabs.com/omc/json/schema/v2.6",
+                      "entityType": "Context",
+                      "identifier": [
+                        {
+                          "identifierScope": "com.yamdu.app",
+                          "identifierValue": "com.yamdu.app.scene.context.2621286"
+                        }
+                      ],
+                      "features": {
+                        "Character": [
+                          {
+                            "name": "Isa",
+                            "characterName": {
+                              "fullName": "Isa"
+                            },
+                            "description": "",
+                            "entityType": "Character",
+                            "identifier": [
+                              {
+                                "identifierScope": "com.yamdu.app",
+                                "identifierValue": "com.yamdu.app.role.866503"
+                              }
+                            ],
+                            "schemaVersion": "https://movielabs.com/omc/json/schema/v2.6"
+                          },
+                          {
+                            "name": "Abu",
+                            "characterName": {
+                              "fullName": "Abu"
+                            },
+                            "description": "",
+                            "entityType": "Character",
+                            "identifier": [
+                              {
+                                "identifierScope": "com.yamdu.app",
+                                "identifierValue": "com.yamdu.app.role.866506"
+                              }
+                            ],
+                            "schemaVersion": "https://movielabs.com/omc/json/schema/v2.6"
+                          }
+                        ],
+                        "NarrativeLocation": [
+                          {
+                            "identifier": [
+                              {
+                                "identifierScope": "com.yamdu.app",
+                                "identifierValue": "com.yamdu.app.set.1018954"
+                              }
+                            ]
+                          }
+                        ],
+                        "NarrativeObject": []
+                      },
+                      "has": {
+                        "Asset": []
+                      }
+                    }
+                  ]
+                },
+                {
+                  "schemaVersion": "https://movielabs.com/omc/json/schema/v2.6",
+                  "entityType": "NarrativeScene",
+                  "identifier": [
+                    {
+                      "identifierScope": "com.yamdu.app",
+                      "identifierValue": "com.yamdu.app.scene.2621287"
+                    }
+                  ],
+                  "name": "5",
+                  "sceneName": {
+                    "altName": "",
+                    "fullName": "5"
+                  },
+                  "description": "A terrified Isa and Abu hold onto one another, now by the  mountain’s peak. The hum of Quechua voices and clucking  alpacas envelop this INCA CITADEL above the clouds. Isa and  Abu are gripped by nerves and a strange familiarity, as if  they’ve walked into a lost memory.  ",
+                  "sceneNumber": "5",
+                  "slugline": [
+                    {
+                      "text": "EXT.",
+                      "title": "DAY-EXT."
+                    },
+                    {
+                      "text": "Day",
+                      "title": ""
+                    }
+                  ],
+                  "Context": [
+                    {
+                      "schemaVersion": "https://movielabs.com/omc/json/schema/v2.6",
+                      "entityType": "Context",
+                      "identifier": [
+                        {
+                          "identifierScope": "com.yamdu.app",
+                          "identifierValue": "com.yamdu.app.scene.context.2621287"
+                        }
+                      ],
+                      "features": {
+                        "Character": [
+                          {
+                            "name": "Isa",
+                            "characterName": {
+                              "fullName": "Isa"
+                            },
+                            "description": "",
+                            "entityType": "Character",
+                            "identifier": [
+                              {
+                                "identifierScope": "com.yamdu.app",
+                                "identifierValue": "com.yamdu.app.role.866503"
+                              }
+                            ],
+                            "schemaVersion": "https://movielabs.com/omc/json/schema/v2.6"
+                          },
+                          {
+                            "name": "Abu",
+                            "characterName": {
+                              "fullName": "Abu"
+                            },
+                            "description": "",
+                            "entityType": "Character",
+                            "identifier": [
+                              {
+                                "identifierScope": "com.yamdu.app",
+                                "identifierValue": "com.yamdu.app.role.866506"
+                              }
+                            ],
+                            "schemaVersion": "https://movielabs.com/omc/json/schema/v2.6"
+                          }
+                        ],
+                        "NarrativeLocation": [
+                          {
+                            "identifier": [
+                              {
+                                "identifierScope": "com.yamdu.app",
+                                "identifierValue": "com.yamdu.app.set.1018955"
+                              }
+                            ]
+                          }
+                        ],
+                        "NarrativeObject": []
+                      },
+                      "has": {
+                        "Asset": []
+                      }
+                    }
+                  ]
+                },
+                {
+                  "schemaVersion": "https://movielabs.com/omc/json/schema/v2.6",
+                  "entityType": "NarrativeScene",
+                  "identifier": [
+                    {
+                      "identifierScope": "com.yamdu.app",
+                      "identifierValue": "com.yamdu.app.scene.2621288"
+                    }
+                  ],
+                  "name": "6",
+                  "sceneName": {
+                    "altName": "",
+                    "fullName": "6"
+                  },
+                  "description": "Home again.  ",
+                  "sceneNumber": "6",
+                  "slugline": [
+                    {
+                      "text": "INT.",
+                      "title": "DAY-INT."
+                    },
+                    {
+                      "text": "Day",
+                      "title": ""
+                    }
+                  ],
+                  "Context": [
+                    {
+                      "schemaVersion": "https://movielabs.com/omc/json/schema/v2.6",
+                      "entityType": "Context",
+                      "identifier": [
+                        {
+                          "identifierScope": "com.yamdu.app",
+                          "identifierValue": "com.yamdu.app.scene.context.2621288"
+                        }
+                      ],
+                      "features": {
+                        "Character": [
+                          {
+                            "name": "Ma",
+                            "characterName": {
+                              "fullName": "Ma"
+                            },
+                            "description": "",
+                            "entityType": "Character",
+                            "identifier": [
+                              {
+                                "identifierScope": "com.yamdu.app",
+                                "identifierValue": "com.yamdu.app.role.866502"
+                              }
+                            ],
+                            "schemaVersion": "https://movielabs.com/omc/json/schema/v2.6"
+                          },
+                          {
+                            "name": "Isa",
+                            "characterName": {
+                              "fullName": "Isa"
+                            },
+                            "description": "",
+                            "entityType": "Character",
+                            "identifier": [
+                              {
+                                "identifierScope": "com.yamdu.app",
+                                "identifierValue": "com.yamdu.app.role.866503"
+                              }
+                            ],
+                            "schemaVersion": "https://movielabs.com/omc/json/schema/v2.6"
+                          }
+                        ],
+                        "NarrativeLocation": [
+                          {
+                            "identifier": [
+                              {
+                                "identifierScope": "com.yamdu.app",
+                                "identifierValue": "com.yamdu.app.set.1018956"
+                              }
+                            ]
+                          }
+                        ],
+                        "NarrativeObject": []
+                      },
+                      "has": {
+                        "Asset": []
+                      }
+                    }
+                  ]
+                }
+            ],
+            "Character": [
+                [
+                    {
+                      "schemaVersion": "https://movielabs.com/omc/json/schema/v2.6",
+                      "entityType": "Character",
+                      "identifier": [
+                        {
+                          "identifierScope": "com.yamdu.app",
+                          "identifierValue": "com.yamdu.app.role.866502"
+                        }
+                      ],
+                      "name": "Ma",
+                      "characterName": {
+                        "fullName": "Ma"
+                      },
+                      "profile": {
+                        "background": {
+                          "dislikes": null,
+                          "habits": null,
+                          "likes": null,
+                          "traits": null
+                        },
+                        "gender": null,
+                        "physicalCharacteristics": {
+                          "eyeColor": null,
+                          "hairColor": null,
+                          "hairLength": null,
+                          "height": null,
+                          "species": null,
+                          "weight": null
+                        }
+                      },
+                      "description": "",
+                      "Depiction": null,
+                      "Context": [
+                        {
+                          "schemaVersion": "https://movielabs.com/omc/json/schema/v2.6",
+                          "entityType": "Context",
+                          "identifier": [
+                            {
+                              "identifierScope": "com.yamdu.app",
+                              "identifierValue": "com.yamdu.app.role.context.866502"
+                            }
+                          ],
+                          "featuresIn": {
+                            "NarrativeScene": [
+                              {
+                                "identifier": [
+                                  {
+                                    "identifierScope": "com.yamdu.app",
+                                    "identifierValue": "com.yamdu.app.scene.2621284"
+                                  }
+                                ]
+                              },
+                              {
+                                "identifier": [
+                                  {
+                                    "identifierScope": "com.yamdu.app",
+                                    "identifierValue": "com.yamdu.app.scene.2621288"
+                                  }
+                                ]
+                              }
+                            ],
+                            "needs": []
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "schemaVersion": "https://movielabs.com/omc/json/schema/v2.6",
+                      "entityType": "Character",
+                      "identifier": [
+                        {
+                          "identifierScope": "com.yamdu.app",
+                          "identifierValue": "com.yamdu.app.role.866503"
+                        }
+                      ],
+                      "name": "Isa",
+                      "characterName": {
+                        "fullName": "Isa"
+                      },
+                      "profile": {
+                        "background": {
+                          "dislikes": null,
+                          "habits": null,
+                          "likes": null,
+                          "traits": null
+                        },
+                        "gender": null,
+                        "physicalCharacteristics": {
+                          "eyeColor": null,
+                          "hairColor": null,
+                          "hairLength": null,
+                          "height": null,
+                          "species": null,
+                          "weight": null
+                        }
+                      },
+                      "description": "",
+                      "Depiction": null,
+                      "Context": [
+                        {
+                          "schemaVersion": "https://movielabs.com/omc/json/schema/v2.6",
+                          "entityType": "Context",
+                          "identifier": [
+                            {
+                              "identifierScope": "com.yamdu.app",
+                              "identifierValue": "com.yamdu.app.role.context.866503"
+                            }
+                          ],
+                          "featuresIn": {
+                            "NarrativeScene": [
+                              {
+                                "identifier": [
+                                  {
+                                    "identifierScope": "com.yamdu.app",
+                                    "identifierValue": "com.yamdu.app.scene.2621284"
+                                  }
+                                ]
+                              },
+                              {
+                                "identifier": [
+                                  {
+                                    "identifierScope": "com.yamdu.app",
+                                    "identifierValue": "com.yamdu.app.scene.2621285"
+                                  }
+                                ]
+                              },
+                              {
+                                "identifier": [
+                                  {
+                                    "identifierScope": "com.yamdu.app",
+                                    "identifierValue": "com.yamdu.app.scene.2621286"
+                                  }
+                                ]
+                              },
+                              {
+                                "identifier": [
+                                  {
+                                    "identifierScope": "com.yamdu.app",
+                                    "identifierValue": "com.yamdu.app.scene.2621287"
+                                  }
+                                ]
+                              },
+                              {
+                                "identifier": [
+                                  {
+                                    "identifierScope": "com.yamdu.app",
+                                    "identifierValue": "com.yamdu.app.scene.2621288"
+                                  }
+                                ]
+                              }
+                            ],
+                            "needs": []
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "schemaVersion": "https://movielabs.com/omc/json/schema/v2.6",
+                      "entityType": "Character",
+                      "identifier": [
+                        {
+                          "identifierScope": "com.yamdu.app",
+                          "identifierValue": "com.yamdu.app.role.866504"
+                        }
+                      ],
+                      "name": "Freckles",
+                      "characterName": {
+                        "fullName": "Freckles"
+                      },
+                      "profile": {
+                        "background": {
+                          "dislikes": null,
+                          "habits": null,
+                          "likes": null,
+                          "traits": null
+                        },
+                        "gender": null,
+                        "physicalCharacteristics": {
+                          "eyeColor": null,
+                          "hairColor": null,
+                          "hairLength": null,
+                          "height": null,
+                          "species": null,
+                          "weight": null
+                        }
+                      },
+                      "description": "",
+                      "Depiction": null,
+                      "Context": [
+                        {
+                          "schemaVersion": "https://movielabs.com/omc/json/schema/v2.6",
+                          "entityType": "Context",
+                          "identifier": [
+                            {
+                              "identifierScope": "com.yamdu.app",
+                              "identifierValue": "com.yamdu.app.role.context.866504"
+                            }
+                          ],
+                          "featuresIn": {
+                            "NarrativeScene": [
+                              {
+                                "identifier": [
+                                  {
+                                    "identifierScope": "com.yamdu.app",
+                                    "identifierValue": "com.yamdu.app.scene.2621285"
+                                  }
+                                ]
+                              }
+                            ],
+                            "needs": []
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "schemaVersion": "https://movielabs.com/omc/json/schema/v2.6",
+                      "entityType": "Character",
+                      "identifier": [
+                        {
+                          "identifierScope": "com.yamdu.app",
+                          "identifierValue": "com.yamdu.app.role.866505"
+                        }
+                      ],
+                      "name": "Young Abu",
+                      "characterName": {
+                        "fullName": "Young Abu"
+                      },
+                      "profile": {
+                        "background": {
+                          "dislikes": null,
+                          "habits": null,
+                          "likes": null,
+                          "traits": null
+                        },
+                        "gender": null,
+                        "physicalCharacteristics": {
+                          "eyeColor": null,
+                          "hairColor": null,
+                          "hairLength": null,
+                          "height": null,
+                          "species": null,
+                          "weight": null
+                        }
+                      },
+                      "description": "",
+                      "Depiction": null,
+                      "Context": [
+                        {
+                          "schemaVersion": "https://movielabs.com/omc/json/schema/v2.6",
+                          "entityType": "Context",
+                          "identifier": [
+                            {
+                              "identifierScope": "com.yamdu.app",
+                              "identifierValue": "com.yamdu.app.role.context.866505"
+                            }
+                          ],
+                          "featuresIn": {
+                            "NarrativeScene": [
+                              {
+                                "identifier": [
+                                  {
+                                    "identifierScope": "com.yamdu.app",
+                                    "identifierValue": "com.yamdu.app.scene.2621285"
+                                  }
+                                ]
+                              }
+                            ],
+                            "needs": []
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "schemaVersion": "https://movielabs.com/omc/json/schema/v2.6",
+                      "entityType": "Character",
+                      "identifier": [
+                        {
+                          "identifierScope": "com.yamdu.app",
+                          "identifierValue": "com.yamdu.app.role.866506"
+                        }
+                      ],
+                      "name": "Abu",
+                      "characterName": {
+                        "fullName": "Abu"
+                      },
+                      "profile": {
+                        "background": {
+                          "dislikes": null,
+                          "habits": null,
+                          "likes": null,
+                          "traits": null
+                        },
+                        "gender": null,
+                        "physicalCharacteristics": {
+                          "eyeColor": null,
+                          "hairColor": null,
+                          "hairLength": null,
+                          "height": null,
+                          "species": null,
+                          "weight": null
+                        }
+                      },
+                      "description": "",
+                      "Depiction": null,
+                      "Context": [
+                        {
+                          "schemaVersion": "https://movielabs.com/omc/json/schema/v2.6",
+                          "entityType": "Context",
+                          "identifier": [
+                            {
+                              "identifierScope": "com.yamdu.app",
+                              "identifierValue": "com.yamdu.app.role.context.866506"
+                            }
+                          ],
+                          "featuresIn": {
+                            "NarrativeScene": [
+                              {
+                                "identifier": [
+                                  {
+                                    "identifierScope": "com.yamdu.app",
+                                    "identifierValue": "com.yamdu.app.scene.2621285"
+                                  }
+                                ]
+                              },
+                              {
+                                "identifier": [
+                                  {
+                                    "identifierScope": "com.yamdu.app",
+                                    "identifierValue": "com.yamdu.app.scene.2621286"
+                                  }
+                                ]
+                              },
+                              {
+                                "identifier": [
+                                  {
+                                    "identifierScope": "com.yamdu.app",
+                                    "identifierValue": "com.yamdu.app.scene.2621287"
+                                  }
+                                ]
+                              }
+                            ],
+                            "needs": []
+                          }
+                        }
+                      ]
+                    }
+                ]
+            ]
+        }
+    ]
+}
