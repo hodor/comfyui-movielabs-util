@@ -110,7 +110,6 @@ class AssetProvenance:
     CATEGORY = "MovieLabs > Util > Grant8&9"
 
     def capture_provenance(self, **kwargs):
-        print(kwargs)
         artist_id = get_artist_id(kwargs["artist_name"])
         shot_id = get_shot_id(kwargs["shot_name"])
         task_id = get_task_id(kwargs["task_name"])
