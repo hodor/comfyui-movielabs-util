@@ -1,0 +1,32 @@
+{
+    "shots": [
+        {
+            "id": "shot-123",
+            "name": "Shot 123"
+        },
+        {
+            "id": "shot-456",
+            "name": "Shot 456"
+        }
+    ],
+    "tasks": [
+        {
+            "id": "task-123",
+            "name": "Concept Art for Character"
+        },
+        {
+            "id": "task-456",
+            "name": "Video Shot"
+        }
+    ],
+    "artists": [
+        {
+            "id": "artist-123",
+            "name": "Arby Anderson"
+        },
+        {
+            "id": "artist-456",
+            "name": "Bob Binger"
+        }
+    ]
+}

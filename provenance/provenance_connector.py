@@ -6,7 +6,7 @@ class ProvenanceConnector:
         pass
 
     @classmethod
-    def INPUT_TYPES(s):
+    def INPUT_TYPES(cls):
         return {
             "required": {
                 "images": ("IMAGE",),
@@ -30,7 +30,7 @@ class ProvenanceConnector:
         data["batch_id"] = str(uuid.uuid4())
         extra_pnginfo = kwargs.get("extra_pnginfo", {})
         extra_pnginfo["provenance"] = prov
-        extra_pnginfo["workflowNodeId"] = unique_id or None
+        extra_pnginfo["provenanceConnectorNodeId"] = unique_id or None
         return (images, extra_pnginfo)
 
 NODE_CLASS_MAPPINGS = {
