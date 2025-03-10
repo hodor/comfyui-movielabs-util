@@ -29,7 +29,7 @@ We encourage you to experiment with these nodes and provide feedback.
 
 ### 1. Preconfigured Workflows
 
-Two sample workflows are provided:
+Two sample workflows are provided under `example_workflows/`:
 
 - One for **image generation**
 - One for **video generation**
