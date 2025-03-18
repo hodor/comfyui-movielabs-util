@@ -21,12 +21,36 @@
     ],
     "artists": [
         {
-            "id": "artist-123",
-            "name": "Arby Anderson"
+            "id": "artist-1",
+            "name": "Khayyam"
         },
         {
-            "id": "artist-456",
-            "name": "Bob Binger"
+            "id": "artist-2",
+            "name": "Ben"
+        },
+        {
+            "id": "artist-3",
+            "name": "Brian"
+        },
+        {
+            "id": "artist-4",
+            "name": "Gilberto"
+        },
+        {
+            "id": "artist-5",
+            "name": "Porter"
+        },
+        {
+            "id": "artist-6",
+            "name": "Mitch"
+        },
+        {
+            "id": "artist-7",
+            "name": "Shreya"
+        },
+        {
+            "id": "artist-8",
+            "name": "Kon"
         }
     ]
 }
