@@ -17,6 +17,8 @@ class AssetProvenanceModel(BaseModel):
     shot_id: str = Field(default=None, alias="shotId")
     task_id: str = Field(default=None, alias="taskId")
     artist_id: str = Field(default=None, alias="artistId")
+    setup: str = Field(default=None, alias="setup")
+    take: str = Field(default=None, alias="take")
     # comes from narrative tracking systems, such as Yamdu
     creative_work: IdentifierModel = Field(alias="creativeWork")
     character: Optional[IdentifierModel] = Field(default=None, alias="character")
@@ -42,7 +44,7 @@ class AssetProvenance:
                 "task_name": (task_names,),
                 "creative_work_name": (creative_work_names,),
                 "script_revision": (script_revisions,),
-                "context": (["production", "concept"], {"tooltip": "Is the task considered direct production work (production) or something that helps with production eventually (concept)?"}),
+                "context": (["production", "concept", "experimentation"], {"tooltip": "Is the task considered direct production work (production) or something that helps with production eventually (concept) or an experiment (experimentation)?"}),
                 "asset_type": (["artwork",
                     "artwork.animatedStoryboard",
                     "artwork.conceptArt",
@@ -100,6 +102,8 @@ class AssetProvenance:
             "optional": {
                 "character_name": ([""] + character_names, {"default": ""}),
                 "scene_number": ([""] + scene_numbers, {"default": ""}),
+                "setup": ("STRING", {"default": "", "multiline": False}),
+                "take": ("STRING", {"default": "", "multiline": False}),
             },
         }
 
@@ -119,6 +123,8 @@ class AssetProvenance:
         scene_id = get_scene_id(kwargs["scene_number"]) if kwargs["scene_number"] else None
         context = kwargs["context"]
         asset_type = kwargs["asset_type"]
+        setup = kwargs["setup"]
+        take = kwargs["take"]
 
         if context == "concept" and character_id is None:
             raise ValueError("Character is required for concept work")
@@ -135,6 +141,8 @@ class AssetProvenance:
             scene=IdentifierModel(identifierScope=scene_id[0], identifierValue=scene_id[1]) if scene_id else None,
             context=context,
             asset_type=asset_type,
+            setup=setup,
+            take=take
         )
         provenance = {}
         model = {}
