@@ -1,5 +1,7 @@
 import getpass
 import os
+import hashlib
+import time
 from typing import Optional
 from pydantic import BaseModel, Field
 from .version import model_name, model_version
@@ -32,6 +34,7 @@ class AssetProvenanceModel(BaseModel):
     context: str = Field(description="Is the task considered direct production work (production) or something that helps with production eventually (narrative)?")
     asset_type: str = Field(description="The type of asset", alias="assetFunctionalType")
     scene_number: Optional[str] = Field(default=None, alias="sceneNumber")
+    for_review: bool = Field(default=False, alias="forReview", description="Flag to indicate if this asset is a candidate for review")
     class Config:
         populate_by_name = True
 
@@ -43,6 +46,7 @@ class AssetProvenance:
     def INPUT_TYPES(cls):
         return {
             "required": {
+                "for_review": ("BOOLEAN", {"default": False, "label": "Mark as review candidate"}),
                 "shot_name": (shot_names,),
                 "task_name": (task_names,),
                 "creative_work_name": (creative_work_names,),
@@ -129,7 +133,7 @@ class AssetProvenance:
         asset_type = kwargs["asset_type"]
         setup = kwargs["setup"]
         take = kwargs["take"]
-
+        for_review = kwargs["for_review"]
         if context == "concept" and character_id is None:
             raise ValueError("Character is required for concept work")
 
@@ -146,7 +150,8 @@ class AssetProvenance:
             context=context,
             asset_type=asset_type,
             setup=setup,
-            take=take
+            take=take,
+            for_review=for_review
         )
         provenance = {}
         model = {}
