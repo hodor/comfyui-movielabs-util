@@ -21,6 +21,7 @@ class AssetProvenanceModel(BaseModel):
     take: str = Field(default=None, alias="take")
     # comes from narrative tracking systems, such as Yamdu
     creative_work: IdentifierModel = Field(alias="creativeWork")
+    creative_work_name: str = Field(default=None, alias="creativeWorkName")
     character: Optional[IdentifierModel] = Field(default=None, alias="character")
     scene: Optional[IdentifierModel] = Field(default=None, alias="scene")
     # comes from MAM
@@ -28,6 +29,7 @@ class AssetProvenanceModel(BaseModel):
     # comes from the tool
     context: str = Field(description="Is the task considered direct production work (production) or something that helps with production eventually (narrative)?")
     asset_type: str = Field(description="The type of asset", alias="assetFunctionalType")
+    scene_number: Optional[str] = Field(default=None, alias="sceneNumber")
     class Config:
         populate_by_name = True
 
@@ -84,7 +86,7 @@ class AssetProvenance:
             },
             "optional": {
                 "character_name": ([""] + character_names, {"default": ""}),
-                "scene_number": ([""] + scene_numbers, {"default": ""}),
+                "scene": ([""] + scene_numbers, {"default": ""}),
                 "setup": ("STRING", {"default": "", "multiline": False}),
                 "take": ("STRING", {"default": "", "multiline": False}),
             },
@@ -101,9 +103,11 @@ class AssetProvenance:
         shot_id = get_shot_id(kwargs["shot_name"])
         task_id = get_task_id(kwargs["task_name"])
         creative_work_id = get_creative_work_id(kwargs["creative_work_name"])
+        creative_work_name = kwargs["creative_work_name"] if kwargs["creative_work_name"] else None
         script_id = get_script_id(kwargs["script_revision"])
         character_id = get_character_id(kwargs["character_name"]) if kwargs["character_name"] else None
-        scene_id = get_scene_id(kwargs["scene_number"]) if kwargs["scene_number"] else None
+        scene_number = kwargs["scene"] if kwargs["scene"] else None
+        scene = get_scene_id(kwargs["scene"]) if kwargs["scene"] else None
         context = kwargs["context"]
         asset_type = kwargs["asset_type"]
         setup = kwargs["setup"]
@@ -111,17 +115,17 @@ class AssetProvenance:
 
         if context == "concept" and character_id is None:
             raise ValueError("Character is required for concept work")
-        if context == "production" and scene_id is None:
-            raise ValueError("Scene is required for production work")
 
         prov = AssetProvenanceModel(
             artist_id=artist_id,
             shot_id=shot_id,
             task_id=task_id,
             creative_work=IdentifierModel(identifierScope=creative_work_id[0], identifierValue=creative_work_id[1]),
+            creative_work_name=creative_work_name,
             script_id=IdentifierModel(identifierScope=script_id[0], identifierValue=script_id[1]),
             character=IdentifierModel(identifierScope=character_id[0], identifierValue=character_id[1]) if character_id else None,
-            scene=IdentifierModel(identifierScope=scene_id[0], identifierValue=scene_id[1]) if scene_id else None,
+            scene=IdentifierModel(identifierScope=scene[0], identifierValue=scene[1]) if scene else None,
+            scene_number=scene_number,
             context=context,
             asset_type=asset_type,
             setup=setup,
