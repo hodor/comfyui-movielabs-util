@@ -1,6 +1,6 @@
 {
-  "last_node_id": 81,
-  "last_link_id": 189,
+  "last_node_id": 86,
+  "last_link_id": 198,
   "nodes": [
     {
       "id": 38,
@@ -49,7 +49,7 @@
         78
       ],
       "flags": {},
-      "order": 9,
+      "order": 11,
       "mode": 0,
       "inputs": [
         {
@@ -100,7 +100,7 @@
         154
       ],
       "flags": {},
-      "order": 8,
+      "order": 9,
       "mode": 0,
       "inputs": [
         {
@@ -143,7 +143,7 @@
         164.31304931640625
       ],
       "flags": {},
-      "order": 6,
+      "order": 7,
       "mode": 0,
       "inputs": [
         {
@@ -184,7 +184,7 @@
         180.6060791015625
       ],
       "flags": {},
-      "order": 7,
+      "order": 8,
       "mode": 0,
       "inputs": [
         {
@@ -324,7 +324,7 @@
         230
       ],
       "flags": {},
-      "order": 10,
+      "order": 14,
       "mode": 0,
       "inputs": [
         {
@@ -431,7 +431,7 @@
         46
       ],
       "flags": {},
-      "order": 11,
+      "order": 15,
       "mode": 0,
       "inputs": [
         {
@@ -450,8 +450,7 @@
           "name": "IMAGE",
           "type": "IMAGE",
           "links": [
-            106,
-            187
+            195
           ],
           "slot_index": 0
         }
@@ -462,15 +461,15 @@
       "widgets_values": []
     },
     {
-      "id": 80,
-      "type": "AssetProvenance",
+      "id": 85,
+      "type": "GetNode",
       "pos": [
-        1183.673828125,
-        812.2356567382812
+        1402.2000732421875,
+        327.3290100097656
       ],
       "size": [
-        315,
-        250
+        210,
+        58
       ],
       "flags": {},
       "order": 5,
@@ -478,39 +477,83 @@
       "inputs": [],
       "outputs": [
         {
-          "name": "provenance",
-          "type": "PROVENANCE",
+          "name": "IMAGE",
+          "type": "IMAGE",
           "links": [
-            188
+            197,
+            198
           ],
           "slot_index": 0
         }
       ],
-      "properties": {
-        "Node name for S&R": "AssetProvenance"
-      },
+      "title": "Get_tag123",
+      "properties": {},
       "widgets_values": [
-        "Bob Binger",
-        "Shot 456",
-        "Video Shot",
-        "Pathways",
-        "WHITE",
-        "production",
-        "capture",
-        "",
-        "3"
-      ]
+        "tag123"
+      ],
+      "color": "#2a363b",
+      "bgcolor": "#3f5159"
     },
     {
-      "id": 81,
+      "id": 82,
       "type": "ProvenanceConnector",
       "pos": [
-        1352.236083984375,
-        359.1161804199219
+        1645.1671142578125,
+        432.5700378417969
       ],
       "size": [
-        252,
+        330,
         46
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 198
+        },
+        {
+          "name": "provenance",
+          "type": "PROVENANCE",
+          "link": 193
+        }
+      ],
+      "outputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "links": [
+            190
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "filename_prefix",
+          "type": "STRING",
+          "links": [
+            191,
+            194
+          ],
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ProvenanceConnector"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 41,
+      "type": "SaveAnimatedWEBP",
+      "pos": [
+        2346.1591796875,
+        31.637380599975586
+      ],
+      "size": [
+        680,
+        610
       ],
       "flags": {},
       "order": 13,
@@ -519,47 +562,47 @@
         {
           "name": "images",
           "type": "IMAGE",
-          "link": 187
+          "link": 197
         },
         {
-          "name": "provenance",
-          "type": "PROVENANCE",
-          "link": 188
+          "name": "filename_prefix",
+          "type": "STRING",
+          "link": 194,
+          "widget": {
+            "name": "filename_prefix"
+          }
         }
       ],
-      "outputs": [
-        {
-          "name": "images",
-          "type": "IMAGE",
-          "links": [
-            189
-          ],
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "ProvenanceConnector"
-      }
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "prov-vid",
+        24,
+        false,
+        90,
+        "default",
+        null
+      ]
     },
     {
       "id": 77,
       "type": "VHS_VideoCombine",
       "pos": [
-        1665.870849609375,
-        567.4149780273438
+        2349.626220703125,
+        711.83740234375
       ],
       "size": [
         219.3603515625,
-        480.9068908691406
+        476.9068908691406
       ],
       "flags": {},
-      "order": 14,
+      "order": 12,
       "mode": 0,
       "inputs": [
         {
           "name": "images",
           "type": "IMAGE",
-          "link": 189
+          "link": 190
         },
         {
           "name": "audio",
@@ -578,13 +621,22 @@
           "type": "VAE",
           "link": null,
           "shape": 7
+        },
+        {
+          "name": "filename_prefix",
+          "type": "STRING",
+          "link": 191,
+          "widget": {
+            "name": "filename_prefix"
+          }
         }
       ],
       "outputs": [
         {
           "name": "Filenames",
           "type": "VHS_FILENAMES",
-          "links": null
+          "links": null,
+          "slot_index": 0
         }
       ],
       "properties": {
@@ -605,47 +657,96 @@
           "hidden": false,
           "paused": false,
           "params": {
-            "filename": "prov-vid_00002.mp4",
+            "filename": "51-10_00003.mp4",
             "subfolder": "",
             "type": "output",
             "format": "video/h264-mp4",
             "frame_rate": 24,
-            "workflow": "prov-vid_00002.png",
-            "fullpath": "/Users/gmanepalli/Workspace/ComfyUI/output/prov-vid_00002.mp4"
+            "workflow": "51-10_00003.png",
+            "fullpath": "/Users/gmanepalli/Workspace/ComfyUI/output/51-10_00003.mp4"
           }
         }
       }
     },
     {
-      "id": 41,
-      "type": "SaveAnimatedWEBP",
+      "id": 86,
+      "type": "SetNode",
       "pos": [
-        2010.776611328125,
-        39.51665496826172
+        1908.18017578125,
+        25.8320255279541
       ],
       "size": [
-        680,
-        610
+        210,
+        58
       ],
       "flags": {},
-      "order": 12,
+      "order": 16,
       "mode": 0,
       "inputs": [
         {
-          "name": "images",
+          "name": "IMAGE",
           "type": "IMAGE",
-          "link": 106
+          "link": 195
         }
       ],
-      "outputs": [],
-      "properties": {},
+      "outputs": [
+        {
+          "name": "*",
+          "type": "*",
+          "links": [],
+          "slot_index": 0
+        }
+      ],
+      "title": "Set_tag123",
+      "properties": {
+        "previousName": "tag123"
+      },
       "widgets_values": [
-        "prov-vid",
-        24,
-        false,
-        90,
-        "default",
-        null
+        "tag123"
+      ],
+      "color": "#2a363b",
+      "bgcolor": "#3f5159"
+    },
+    {
+      "id": 84,
+      "type": "AssetProvenance",
+      "pos": [
+        1279.5601806640625,
+        598.7373046875
+      ],
+      "size": [
+        315,
+        298
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "provenance",
+          "type": "PROVENANCE",
+          "links": [
+            193
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "AssetProvenance"
+      },
+      "widgets_values": [
+        "Shot 123",
+        "Concept Art for Character",
+        "Pathways",
+        "WHITE",
+        "production",
+        "shot",
+        true,
+        "Ma",
+        "5",
+        "1",
+        "10"
       ]
     }
   ],
@@ -673,14 +774,6 @@
       8,
       1,
       "VAE"
-    ],
-    [
-      106,
-      8,
-      0,
-      41,
-      0,
-      "IMAGE"
     ],
     [
       166,
@@ -763,26 +856,58 @@
       "SIGMAS"
     ],
     [
-      187,
-      8,
+      190,
+      82,
       0,
-      81,
+      77,
       0,
       "IMAGE"
     ],
     [
-      188,
-      80,
+      191,
+      82,
+      1,
+      77,
+      4,
+      "STRING"
+    ],
+    [
+      193,
+      84,
       0,
-      81,
+      82,
       1,
       "PROVENANCE"
     ],
     [
-      189,
-      81,
+      194,
+      82,
+      1,
+      41,
+      1,
+      "STRING"
+    ],
+    [
+      195,
+      8,
       0,
-      77,
+      86,
+      0,
+      "*"
+    ],
+    [
+      197,
+      85,
+      0,
+      41,
+      0,
+      "IMAGE"
+    ],
+    [
+      198,
+      85,
+      0,
+      82,
       0,
       "IMAGE"
     ]
@@ -791,14 +916,15 @@
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.7513148009015781,
+      "scale": 0.6115909044841462,
       "offset": [
-        -615.5339760117192,
-        36.456924519530936
+        -866.588977226417,
+        151.5648168283801
       ]
     },
     "node_versions": {
       "comfy-core": "0.3.14",
+      "comfyui-movielabs-util": "6abf462a726932586e253123f8e3ca36dc9e1961",
       "comfyui-videohelpersuite": "1.5.3"
     },
     "ue_links": [],
