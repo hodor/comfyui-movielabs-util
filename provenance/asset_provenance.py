@@ -1,8 +1,10 @@
+import getpass
+import os
 from typing import Optional
 from pydantic import BaseModel, Field
 from .version import model_name, model_version
-from .seed import artist_names, shot_names, task_names, creative_work_names, script_revisions, character_names, scene_numbers
-from .seed import get_artist_id, get_shot_id, get_task_id, get_creative_work_id, get_script_id, get_character_id, get_scene_id
+from .seed import shot_names, task_names, creative_work_names, script_revisions, character_names, scene_numbers
+from .seed import get_shot_id, get_task_id, get_creative_work_id, get_script_id, get_character_id, get_scene_id
 
 class IdentifierModel(BaseModel):
     scope: str = Field(alias="identifierScope")
@@ -16,7 +18,7 @@ class AssetProvenanceModel(BaseModel):
     # comes from production systems, such as ShotGrid
     shot_id: str = Field(default=None, alias="shotId")
     task_id: str = Field(default=None, alias="taskId")
-    artist_id: str = Field(default=None, alias="artistId")
+    artist_id: Optional[str] = Field(default=None, alias="artistId")
     setup: str = Field(default=None, alias="setup")
     take: str = Field(default=None, alias="take")
     # comes from narrative tracking systems, such as Yamdu
@@ -41,7 +43,6 @@ class AssetProvenance:
     def INPUT_TYPES(cls):
         return {
             "required": {
-                "artist_name": (artist_names,),
                 "shot_name": (shot_names,),
                 "task_name": (task_names,),
                 "creative_work_name": (creative_work_names,),
@@ -99,7 +100,23 @@ class AssetProvenance:
     CATEGORY = "MovieLabs > Util > Grant8&9"
 
     def capture_provenance(self, **kwargs):
-        artist_id = get_artist_id(kwargs["artist_name"])
+        # Method 1: get artist id from system username - works on macOS, Linux, and Windows
+        current_user = None
+
+        try:
+            current_user = getpass.getuser()
+        except Exception:
+            pass
+        
+        # Method 2: Check environment variables
+        if not current_user:
+            for env_var in ['USER', 'LOGNAME', 'USERNAME']:
+                current_user = os.environ.get(env_var)
+                if current_user:
+                    break
+            
+        artist_id = current_user
+        
         shot_id = get_shot_id(kwargs["shot_name"])
         task_id = get_task_id(kwargs["task_name"])
         creative_work_id = get_creative_work_id(kwargs["creative_work_name"])

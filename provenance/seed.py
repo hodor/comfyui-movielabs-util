@@ -5,7 +5,6 @@ current_directory = os.path.dirname(os.path.abspath(__file__))
 shotgrid_seed = json.load(open(os.path.join(current_directory, "shotgrid_seed.json")))
 omc_seed = json.load(open(os.path.join(current_directory, "omc_seed.json")))
 
-artist_names = [artist["name"] for artist in shotgrid_seed["artists"]]
 shot_names = [shot["name"] for shot in shotgrid_seed["shots"]]
 task_names = [task["name"] for task in shotgrid_seed["tasks"]]
 
@@ -38,12 +37,6 @@ scene_numbers = [
     for pathway in data
     for scene in pathway.get("NarrativeScene", [])
 ]
-
-def get_artist_id(artist_name):
-    for artist in shotgrid_seed["artists"]:
-        if artist["name"] == artist_name:
-            return artist["id"]
-    return None
 
 def get_shot_id(shot_name):
     for shot in shotgrid_seed["shots"]:
