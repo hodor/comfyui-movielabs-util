@@ -50,11 +50,12 @@ These can serve as templates for integration into your own processes.
 - `shot_name`, `task_name`, `artist_name` (uses identifiers internally, with names for dropdown selection)
 - `creative_work`, `script_name` (actually script revision), `asset_type`, `context`
 
-#### **Context Field: Accepts values `"concept"` or `"production"`**
+#### **Context Field: Accepts values `"concept"` or `"production"` or `"experimentation"`**
 - **Concept:** Used for assets intended for concept development (e.g., character images for LoRA training).
 - **Production:** Used for assets generated for production use (e.g., video footage for a final timeline).
+- **Experimentation:** Used for assets generated for experimental purposes (e.g., character images for a concept video).
 
-  - If `concept` is selected, only character images for LoRA training are expected to be generated (or props if added).
+  - If `concept` or `experimentation` is selected, only character images for LoRA training are expected to be generated (or props if added).
   - If `production` is selected, the **scene number** for which the asset is being generated is expected.
 
 #### **Asset Type Selection**
@@ -72,18 +73,6 @@ These can serve as templates for integration into your own processes.
 - Requires **two inputs**:
   1. One from an **Asset Provenance** node.
   2. One from an **image-generating workflow**.
-
-#### **Recommended Structure**
-
-<pre>
-
-(Rest of Workflow) --images--> Provenance Connector --> Save Image / Video Combine 
-                                    ^ 
-                                    | 
-                                    |
-                            Asset Provenance
-
-</pre>
 
 #### **Best Practices**
 - Use **one Provenance Connector per output node** rather than reusing the same one.
@@ -117,3 +106,20 @@ These can serve as templates for integration into your own processes.
 - Does repeating a workflow align with **“takes”** in traditional filmmaking?
 
 We look forward to discussing these points further.
+
+
+## Release Notes for v0.0.3
+
+Provenance Connector node:
+- Derives useful filename prefix for output files. It is not necessary to use the filename prefix when saving output files, but it is recommended when scene, setup, and take are supplied in the Asset Provenance node.
+
+Asset Provenance node:
+- Added a few asset types for relevant Pathways and The Bends: "shot.firstFrame", "shot.beginningKeyFrame", "shot.middleKeyFrame", "shot.endKeyFrame".
+- Added 'experimentation' option to context dropdown.
+- Added optional 'setup' and 'take' as free-form fields. Eventually, these might be populated based on an external system, such as ShotGrid.
+- Added 'for_review' flag to indicate if the asset is a candidate for review. Users need to set and unset this flag manually.
+- Artist login is now retrieved from the system username.
+
+Examples workflows are updated to use the new features. SetNode and GetNode from KJNodes are used to reflect ETC's workflow design pattern.
+
+
