@@ -11,17 +11,15 @@ def get_next_version_number(version_code):
     if possible_version_number.startswith("v"):
         possible_version_number = possible_version_number[1:]
     if len(possible_version_number) == 3 and possible_version_number.isdigit():
-        print("possible_version_number", possible_version_number)
         # Convert to integer, add 1, and format back to 3 digits
         next_version = int(possible_version_number) + 1
-        print("next_version", next_version)
         if next_version > 999:
             return "999"
         return f"{next_version:03d}"
     else:
         return "001"
 
-def get_user_login():
+def get_user_login(config):
     # Method 1: get artist id from system username - works on macOS, Linux, and Windows
     user_login = None
     try:
@@ -35,6 +33,12 @@ def get_user_login():
             user_login = os.environ.get(env_var)
             if user_login:
                 break
+    
+    if user_login and user_login in config["user_login_map"]:
+        user_login = config["user_login_map"].get(user_login)
+    else:
+        user_login = None
+    
     return user_login
 
 def authenticate_with_client_credentials(client, config, user_login):
@@ -76,7 +80,7 @@ class ShotGrid:
         self.version_convention_regex = format_to_regex(self.config["version_convention"])
         self.client = requests.Session()
         self._refresh_timer = None
-        self.user_login = get_user_login()
+        self.user_login = get_user_login(self.config)
         self._initial_auth()
 
     def __enter__(self):
@@ -93,7 +97,6 @@ class ShotGrid:
         
         if "access_token" in resp_json:
             self.tokens = resp_json
-            print(self.tokens)
             # Set up refresh timer
             if self._refresh_timer:
                 self._refresh_timer.cancel()
@@ -183,23 +186,11 @@ class ShotGrid:
     
     def get_version_code(self, shot_code):
         versions = self.get_versions(shot_code)
-        print("versions", versions)
         if len(versions) > 0:
             version_number = get_next_version_number(versions[0]["attributes"]["code"])
         else:
             version_number = "001"
         return self.format_version_code(version_number, shot_code)
-    
-    # def add_version_from_shot_code(self, shot_code, task_name, fields):
-    #     shot = self.get_shot(shot_code)["data"][0]
-    #     task = self.get_tasks(shot_code, task_name)["data"][0]
-    #     versions = self.get_versions(shot_code)["data"]
-    #     if len(versions) > 0:
-    #         version_number = get_next_version_number(versions[0]["attributes"]["code"])
-    #     else:
-    #         version_number = "001"
-    #     version_code = self.format_version_code(version_number, shot_code)
-    #     self.add_version(version_code, shot["id"], task["id"], fields)
     
     def add_version(self, version_code, shot_id, task_id, fields):
         params = {
@@ -211,10 +202,35 @@ class ShotGrid:
         params.update(fields)
         headers = {"Authorization": f"Bearer {self.tokens['access_token']}", "Accept": "application/json"}
         response = self.client.post(f"{self.config['server_url']}/api/v1/entity/versions", headers=headers, json=params)
+        sg_version = response.json()
+        if "errors" in sg_version:
+            print("response", sg_version)
+            raise Exception("Error adding version to ShotGrid")
+        return sg_version["data"]
+    
+    def request_file_upload(self, version_id, field_name, filename):
+        headers = {"Authorization": f"Bearer {self.tokens['access_token']}", "Accept": "application/json"}
+        response = self.client.get(f"{self.config['server_url']}/api/v1/entity/versions/{version_id}/{field_name}/_upload?filename={filename}", headers=headers)
         if "errors" in response.json():
             print("response", response.json())
-            raise Exception("Error adding version to ShotGrid")
+            raise Exception("Error requesting file upload to ShotGrid")
         return response.json()
+    
+    def upload_file(self, upload_link, file_bytes):
+        headers = {"Accept": "application/json", "Content-Type": "image/png"}
+        response = self.client.put(upload_link, headers=headers, data=file_bytes)
+        if response.status_code != 200:
+            raise Exception("Error uploading file to ShotGrid")
+
+    def complete_file_upload(self, file_upload_data):
+        headers = {"Authorization": f"Bearer {self.tokens['access_token']}", "Accept": "application/json"}
+        data = {
+            "upload_info": file_upload_data["data"],
+            "upload_data": {}
+        }
+        response = self.client.post(f"{self.config['server_url']}{file_upload_data['links']['complete_upload']}", headers=headers, json=data)
+        if response.status_code != 201:
+            raise Exception("Error completing file upload to ShotGrid")
     
     def format_version_code(self, version_number, shot_code):
         if self.config.get("version_convention"):
@@ -223,7 +239,6 @@ class ShotGrid:
             return f"{shot_code}_v{version_number}"
 
 config_path = os.path.join(Path(__file__).parent.parent, "shotgrid_config.json")
-print("config_path", config_path)
 if not os.path.exists(config_path):
     raise Exception("shotgrid_config.json not found")
 with open(config_path, "r") as f:

@@ -79,7 +79,12 @@ class SaveImageWithProvenance:
                             "sg_notes": extra_pnginfo["provenance"]["data"]["notes"],
                         }
                         version_code = sg.get_version_code(shot_code)
-                        sg.add_version(version_code, int(shot_id), int(task_id), fields)
+                        sg_version = sg.add_version(version_code, int(shot_id), int(task_id), fields)
+                        file_upload_data = sg.request_file_upload(sg_version["id"], "sg_output", f"{version_code}.png")
+                        with open(os.path.join(full_output_folder, file), "rb") as f:
+                            file_bytes = f.read()
+                        sg.upload_file(file_upload_data["links"]["upload"], file_bytes)
+                        sg.complete_file_upload(file_upload_data)
                     except Exception as e:
                         raise e
             results.append({

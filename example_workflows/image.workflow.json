@@ -1,6 +1,6 @@
 {
-  "last_node_id": 30,
-  "last_link_id": 45,
+  "last_node_id": 34,
+  "last_link_id": 49,
   "nodes": [
     {
       "id": 1,
@@ -86,45 +86,6 @@
       ],
       "color": "#322",
       "bgcolor": "#533"
-    },
-    {
-      "id": 4,
-      "type": "CLIPTextEncode",
-      "pos": [
-        470.860595703125,
-        370.83721923828125
-      ],
-      "size": [
-        419.1622009277344,
-        267.17010498046875
-      ],
-      "flags": {},
-      "order": 5,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "clip",
-          "type": "CLIP",
-          "link": 3
-        }
-      ],
-      "outputs": [
-        {
-          "name": "CONDITIONING",
-          "type": "CONDITIONING",
-          "links": [
-            5
-          ]
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "CLIPTextEncode"
-      },
-      "widgets_values": [
-        "A man"
-      ],
-      "color": "#232",
-      "bgcolor": "#353"
     },
     {
       "id": 5,
@@ -265,39 +226,6 @@
       "bgcolor": "#3f5159"
     },
     {
-      "id": 7,
-      "type": "EmptyLatentImage",
-      "pos": [
-        957.9060668945312,
-        645.2341918945312
-      ],
-      "size": [
-        315,
-        106
-      ],
-      "flags": {},
-      "order": 1,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "LATENT",
-          "type": "LATENT",
-          "links": [
-            7
-          ]
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "EmptyLatentImage"
-      },
-      "widgets_values": [
-        512,
-        512,
-        3
-      ]
-    },
-    {
       "id": 2,
       "type": "PreviewImage",
       "pos": [
@@ -336,7 +264,7 @@
         58
       ],
       "flags": {},
-      "order": 2,
+      "order": 1,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -344,8 +272,8 @@
           "name": "IMAGE",
           "type": "IMAGE",
           "links": [
-            43,
-            45
+            45,
+            48
           ],
           "slot_index": 0
         }
@@ -359,14 +287,14 @@
       "bgcolor": "#3f5159"
     },
     {
-      "id": 12,
-      "type": "SaveImage",
+      "id": 34,
+      "type": "SaveImageWithProvenance",
       "pos": [
-        2208.399169921875,
-        638.8028564453125
+        2258.626220703125,
+        661.3319702148438
       ],
       "size": [
-        315,
+        327.5999755859375,
         270
       ],
       "flags": {},
@@ -376,32 +304,26 @@
         {
           "name": "images",
           "type": "IMAGE",
-          "link": 39
-        },
-        {
-          "name": "filename_prefix",
-          "type": "STRING",
-          "link": 40,
-          "widget": {
-            "name": "filename_prefix"
-          }
+          "link": 49
         }
       ],
       "outputs": [],
-      "properties": {},
+      "properties": {
+        "Node name for S&R": "SaveImageWithProvenance"
+      },
       "widgets_values": [
-        "prov-image"
+        "ComfyUI"
       ]
     },
     {
-      "id": 28,
+      "id": 33,
       "type": "ProvenanceConnector",
       "pos": [
-        1788.1800537109375,
-        637.2803344726562
+        1849.1531982421875,
+        750.4192504882812
       ],
       "size": [
-        330,
+        252,
         46
       ],
       "flags": {},
@@ -411,12 +333,12 @@
         {
           "name": "images",
           "type": "IMAGE",
-          "link": 43
+          "link": 48
         },
         {
           "name": "provenance",
           "type": "PROVENANCE",
-          "link": 41
+          "link": 47
         }
       ],
       "outputs": [
@@ -424,17 +346,9 @@
           "name": "images",
           "type": "IMAGE",
           "links": [
-            39
+            49
           ],
           "slot_index": 0
-        },
-        {
-          "name": "filename_prefix",
-          "type": "STRING",
-          "links": [
-            40
-          ],
-          "slot_index": 1
         }
       ],
       "properties": {
@@ -443,15 +357,87 @@
       "widgets_values": []
     },
     {
-      "id": 27,
-      "type": "AssetProvenance",
+      "id": 4,
+      "type": "CLIPTextEncode",
       "pos": [
-        1345.1806640625,
-        770.8169555664062
+        470.860595703125,
+        370.83721923828125
+      ],
+      "size": [
+        419.1622009277344,
+        267.17010498046875
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 3
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            5
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "Andes mountain backdrop"
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 7,
+      "type": "EmptyLatentImage",
+      "pos": [
+        957.9060668945312,
+        645.2341918945312
       ],
       "size": [
         315,
-        298
+        106
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            7
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "EmptyLatentImage"
+      },
+      "widgets_values": [
+        512,
+        512,
+        2
+      ]
+    },
+    {
+      "id": 32,
+      "type": "AssetProvenance",
+      "pos": [
+        1231.353515625,
+        885.4537353515625
+      ],
+      "size": [
+        315,
+        130
       ],
       "flags": {},
       "order": 3,
@@ -462,7 +448,7 @@
           "name": "provenance",
           "type": "PROVENANCE",
           "links": [
-            41
+            47
           ],
           "slot_index": 0
         }
@@ -471,17 +457,10 @@
         "Node name for S&R": "AssetProvenance"
       },
       "widgets_values": [
-        "Shot 123",
-        "Concept Art for Character",
-        "Pathways",
-        "WHITE",
-        "production",
-        "shot",
-        false,
-        "Freckles",
-        "1",
-        "master",
-        "2"
+        true,
+        "3-WCA-0010",
+        "Generate Background First Frame",
+        "Decent background"
       ]
     }
   ],
@@ -551,30 +530,6 @@
       "VAE"
     ],
     [
-      39,
-      28,
-      0,
-      12,
-      0,
-      "IMAGE"
-    ],
-    [
-      40,
-      28,
-      1,
-      12,
-      1,
-      "STRING"
-    ],
-    [
-      41,
-      27,
-      0,
-      28,
-      1,
-      "PROVENANCE"
-    ],
-    [
       42,
       6,
       0,
@@ -583,18 +538,34 @@
       "*"
     ],
     [
-      43,
-      29,
-      0,
-      28,
-      0,
-      "IMAGE"
-    ],
-    [
       45,
       29,
       0,
       2,
+      0,
+      "IMAGE"
+    ],
+    [
+      47,
+      32,
+      0,
+      33,
+      1,
+      "PROVENANCE"
+    ],
+    [
+      48,
+      29,
+      0,
+      33,
+      0,
+      "IMAGE"
+    ],
+    [
+      49,
+      33,
+      0,
+      34,
       0,
       "IMAGE"
     ]
@@ -603,15 +574,15 @@
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.8390545288824012,
+      "scale": 0.6303940863128492,
       "offset": [
-        -987.679007928165,
-        -287.64266108196
+        -137.86004669430508,
+        -150.59604534677203
       ]
     },
     "node_versions": {
       "comfy-core": "0.3.14",
-      "comfyui-movielabs-util": "6abf462a726932586e253123f8e3ca36dc9e1961"
+      "comfyui-movielabs-util": "78f3750fa8d8e487b5fd84178f5a4376e9544726"
     },
     "ue_links": [],
     "VHS_latentpreview": false,
