@@ -90,6 +90,7 @@ dmypy.json
 
 # testing
 /coverage
+test.py
 
 # production
 /build

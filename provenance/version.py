@@ -1,2 +1,2 @@
-model_name = "movielabs-asset-provenance"
-model_version = "0.0.3"
+data_model_name = "movielabs-asset-provenance"
+data_model_version = "0.0.4"
