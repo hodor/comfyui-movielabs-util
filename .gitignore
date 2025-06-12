@@ -91,6 +91,7 @@ dmypy.json
 # testing
 /coverage
 test.py
+experiment.ipynb
 
 # production
 /build
