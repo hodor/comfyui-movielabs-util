@@ -133,7 +133,7 @@ class ShotGrid:
 
     def get_shots(self):
         headers = {"Authorization": f"Bearer {self.tokens['access_token']}", "Accept": "application/json"}
-        params = {"filter[project.Project.id]": self.config["project_id"], "fields": "id,code,project,content"}
+        params = {"filter[project.Project.id]": self.config["project_id"], "filter[tasks.Task.content]": ",".join(self.config["comfyui_task_names"]), "fields": "id,code,project,content"}
         response = self.client.get(f"{self.config['server_url']}/api/v1.1/entity/Shot", headers=headers, params=params)
         sg_shots = response.json()
         if "errors" in sg_shots:
