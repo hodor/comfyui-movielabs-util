@@ -5,6 +5,8 @@ import re
 import threading
 import requests
 import json
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 def get_next_version_number(version_code):
     possible_version_number = version_code.split("_")[-1]
@@ -79,6 +81,11 @@ class ShotGrid:
         self.config = config
         self.version_convention_regex = format_to_regex(self.config["version_convention"])
         self.client = requests.Session()
+        requests.Session()
+        retries = Retry(total=5, backoff_factor=1, status_forcelist=[502, 503, 504])
+        adapter = HTTPAdapter(max_retries=retries)
+        self.client.mount('http://', adapter)
+        self.client.mount('https://', adapter)
         self._refresh_timer = None
         self.user_login = get_user_login(self.config)
         self._initial_auth()
@@ -137,7 +144,12 @@ class ShotGrid:
         response = self.client.get(f"{self.config['server_url']}/api/v1.1/entity/Shot", headers=headers, params=params)
         sg_shots = response.json()
         if "errors" in sg_shots:
-            raise Exception("Error getting shots from ShotGrid")
+            if response.status_code == 401:
+                self.cleanup()
+                self._initial_auth()
+                return self.get_shots()
+            else:
+                raise Exception("Error getting shots from ShotGrid")
         if "data" in sg_shots and len(sg_shots["data"]) > 0:
             return [shot for shot in sg_shots["data"] if "attributes" in shot and "code" in shot["attributes"]]
         else:
@@ -149,7 +161,12 @@ class ShotGrid:
         response = self.client.get(f"{self.config['server_url']}/api/v1.1/entity/Shot", headers=headers, params=params)
         sg_shot = response.json()
         if "errors" in sg_shot:
-            raise Exception("Error getting shot from ShotGrid")
+            if response.status_code == 401:
+                self.cleanup()
+                self._initial_auth()
+                return self.get_shot(shot_code)
+            else:
+                raise Exception("Error getting shot from ShotGrid")
         if "data" in sg_shot and len(sg_shot["data"]) > 0:
             return [shot for shot in sg_shot["data"] if "attributes" in shot and "code" in shot["attributes"]]
         else:
@@ -163,7 +180,12 @@ class ShotGrid:
         response = self.client.get(f"{self.config['server_url']}/api/v1.1/entity/Task", headers=headers, params=params)
         sg_tasks = response.json()
         if "errors" in sg_tasks:
-            raise Exception("Error getting tasks from ShotGrid")
+            if response.status_code == 401:
+                self.cleanup()
+                self._initial_auth()
+                return self.get_tasks(shot_code, task_name)
+            else:
+                raise Exception("Error getting tasks from ShotGrid")
         if "data" in sg_tasks and len(sg_tasks["data"]) > 0:
             return sg_tasks["data"]
         else:
@@ -176,7 +198,12 @@ class ShotGrid:
         response = self.client.get(f"{self.config['server_url']}/api/v1.1/entity/Version", headers=headers, params=params)
         sg_versions = response.json()
         if "errors" in sg_versions:
-            raise Exception("Error getting versions from ShotGrid")
+            if response.status_code == 401:
+                self.cleanup()
+                self._initial_auth()
+                return self.get_versions(shot_code)
+            else:
+                raise Exception("Error getting versions from ShotGrid")
         if "data" in sg_versions and len(sg_versions["data"]) > 0:
             sg_versions = sg_versions["data"]
             versions = [version for version in sg_versions if self.version_convention_regex.match(version["attributes"]["code"])]
@@ -204,16 +231,24 @@ class ShotGrid:
         response = self.client.post(f"{self.config['server_url']}/api/v1/entity/versions", headers=headers, json=params)
         sg_version = response.json()
         if "errors" in sg_version:
-            print("response", sg_version)
-            raise Exception("Error adding version to ShotGrid")
+            if response.status_code == 401:
+                self.cleanup()
+                self._initial_auth()
+                return self.add_version(version_code, shot_id, task_id, fields)
+            else:
+                raise Exception("Error adding version to ShotGrid")
         return sg_version["data"]
     
     def request_file_upload(self, version_id, field_name, filename):
         headers = {"Authorization": f"Bearer {self.tokens['access_token']}", "Accept": "application/json"}
         response = self.client.get(f"{self.config['server_url']}/api/v1/entity/versions/{version_id}/{field_name}/_upload?filename={filename}", headers=headers)
         if "errors" in response.json():
-            print("response", response.json())
-            raise Exception("Error requesting file upload to ShotGrid")
+            if response.status_code == 401:
+                self.cleanup()
+                self._initial_auth()
+                return self.request_file_upload(version_id, field_name, filename)
+            else:
+                raise Exception("Error requesting file upload to ShotGrid")
         return response.json()
     
     def upload_file(self, upload_link, file_bytes):
@@ -230,7 +265,12 @@ class ShotGrid:
         }
         response = self.client.post(f"{self.config['server_url']}{file_upload_data['links']['complete_upload']}", headers=headers, json=data)
         if response.status_code != 201:
-            raise Exception("Error completing file upload to ShotGrid")
+            if response.status_code == 401:
+                self.cleanup()
+                self._initial_auth()
+                return self.complete_file_upload(file_upload_data)
+            else:
+                raise Exception("Error completing file upload to ShotGrid")
     
     def format_version_code(self, version_number, shot_code):
         if self.config.get("version_convention"):

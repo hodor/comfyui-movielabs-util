@@ -1,7 +1,5 @@
 import copy
-import json
 import uuid
-from .shotgrid import sg
 
 class ProvenanceConnector:
     def __init__(self):
