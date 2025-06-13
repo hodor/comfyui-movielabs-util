@@ -76,16 +76,19 @@ def format_to_regex(pattern):
     regex_pattern = regex_pattern.replace('\\.\\*', '.*')
     return re.compile(regex_pattern)
 
+def create_client():
+    client = requests.Session()
+    retries = Retry(total=5, backoff_factor=1, status_forcelist=[502, 503, 504])
+    adapter = HTTPAdapter(max_retries=retries)
+    client.mount('http://', adapter)
+    client.mount('https://', adapter)
+    return client
+
 class ShotGrid:
     def __init__(self, config):
         self.config = config
         self.version_convention_regex = format_to_regex(self.config["version_convention"])
-        self.client = requests.Session()
-        requests.Session()
-        retries = Retry(total=5, backoff_factor=1, status_forcelist=[502, 503, 504])
-        adapter = HTTPAdapter(max_retries=retries)
-        self.client.mount('http://', adapter)
-        self.client.mount('https://', adapter)
+        self.client = create_client()
         self._refresh_timer = None
         self.user_login = get_user_login(self.config)
         self._initial_auth()
@@ -105,8 +108,7 @@ class ShotGrid:
         if "access_token" in resp_json:
             self.tokens = resp_json
             # Set up refresh timer
-            if self._refresh_timer:
-                self._refresh_timer.cancel()
+            self.cleanup()
             
             self._refresh_timer = threading.Timer(
                 self.tokens["expires_in"] - 30,
@@ -123,8 +125,7 @@ class ShotGrid:
         self.tokens = resp_json
         
         # Set up next refresh
-        if self._refresh_timer:
-            self._refresh_timer.cancel()
+        self.cleanup()
         
         self._refresh_timer = threading.Timer(
             self.tokens["expires_in"] - 30,
