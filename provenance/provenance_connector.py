@@ -1,5 +1,6 @@
 import copy
 import uuid
+import comfyui_version
 
 class ProvenanceConnector:
     def __init__(self):
@@ -30,7 +31,8 @@ class ProvenanceConnector:
         extra_pnginfo["provenance"] = prov
         extra_pnginfo["provenanceConnectorNodeId"] = unique_id or None
         extra_pnginfo["batchId"] = str(uuid.uuid4())
-        
+        extra_pnginfo["tool"] = "ComfyUI"
+        extra_pnginfo["comfyuiVersion"] = comfyui_version.__version__ if "__version__" in dir(comfyui_version) else None
         return (images, extra_pnginfo)
 
 NODE_CLASS_MAPPINGS = {

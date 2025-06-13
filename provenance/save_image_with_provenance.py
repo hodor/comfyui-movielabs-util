@@ -70,6 +70,7 @@ class SaveImageWithProvenance:
                             "saveImageNodeId": unique_id,
                             "provenanceNodeId": extra_pnginfo["provenanceConnectorNodeId"],
                             "batchId": extra_pnginfo["batchId"],
+                            "comfyuiVersion": extra_pnginfo["comfyuiVersion"],
                         }
                         fields = {
                             "sg_tool": "ComfyUI",
