@@ -83,7 +83,7 @@ def match_extension(task_name, is_original, file_path):
     _, ext = os.path.splitext(file_path)
     ext = ext[1:].lower()
     if ext not in supported_extensions:
-        raise ValueError(f"Unsupported {kind} file extension: {ext} for {task_name} task. Must be {", ".join(supported_extensions)}")
+        raise ValueError(f"Unsupported {kind} file extension: {ext} for {task_name} task. Must be {', '.join(supported_extensions)}")
     return True
 
 def list_exr_files(dir_path):
@@ -187,7 +187,7 @@ def create_blender_version(shot_code, original_file_path):
     _, ext = os.path.splitext(original_file_path)
     ext = ext[1:].lower()
     if ext not in filesystem_config["version_convention"]["Blender Files"]["file_ext"]:
-        raise ValueError(f"Original {original_file_path} not a Blender file. File extension must be {", ".join(filesystem_config['version_convention']['Blender Files']['file_ext'])}")
+        raise ValueError(f"Original {original_file_path} not a Blender file. File extension must be {', '.join(filesystem_config['version_convention']['Blender Files']['file_ext'])}")
     
     output_dir = get_output_dir(shot_code)
     task_dir = os.path.join(output_dir, os.path.join(*filesystem_config["version_convention"]["Blender Files"]["parent_dir"]))
