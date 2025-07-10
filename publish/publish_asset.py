@@ -9,9 +9,10 @@ class PublishAsset:
     
     @classmethod
     def INPUT_TYPES(cls):
+        artist_logins_with_blank = [""] + artist_logins
         return {
             "required": {
-                "artist_login": (artist_logins,),
+                "artist_login": (artist_logins_with_blank,),
                 "shot_code": (list(shots.keys()),),
                 "task_name": (task_names,),
                 "original_asset_file_path": ("STRING", {"default": "", "label": "Original Asset File Path", "tooltip": "Path to the original asset file"}),
@@ -29,6 +30,8 @@ class PublishAsset:
 
     def publish_asset(self, **kwargs):
         artist_login = kwargs["artist_login"]
+        if artist_login == "":
+            raise Exception("Select your artist login")
         sg = ShotGrid(shotgrid_config, artist_login)
 
         shot_code = kwargs["shot_code"]
