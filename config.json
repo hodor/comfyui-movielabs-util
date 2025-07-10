@@ -1,0 +1,128 @@
+{
+    "task_names": ["Blender Renders", "Camera Animation", "Camera Tracking", "CG Relight", "Comp", "Generate Blender Ref", "Generate Image", "Generate Video", "Slap Comp", "Upres"],
+    "shotgrid": {
+        "project_id": 254,
+        "server_url": "https://etc-europa.shotgrid.autodesk.com",
+        "client_id": "api_admin",
+        "client_secret": "shc)hodTfgvngspedkkk9nome",
+        "version_convention": {
+            "Blender Renders": "{SHOT_CODE}_BRN_v{VERSION_NUMBER}",
+            "Camera Animation": "{SHOT_CODE}_CAM_v{VERSION_NUMBER}",
+            "Camera Tracking": "{SHOT_CODE}_TRK_v{VERSION_NUMBER}",
+            "CG Relight": "{SHOT_CODE}_CGR_v{VERSION_NUMBER}",
+            "Comp": "{SHOT_CODE}_CMP_v{VERSION_NUMBER}",
+            "Generate Blender Ref": "{SHOT_CODE}_BRF_v{VERSION_NUMBER}",
+            "Generate Image": "{SHOT_CODE}_IMG_v{VERSION_NUMBER}",
+            "Generate Video": "{SHOT_CODE}_VID_v{VERSION_NUMBER}",
+            "Slap Comp": "{SHOT_CODE}_SLP_v{VERSION_NUMBER}",
+            "Upres": "{SHOT_CODE}_UPR_v{VERSION_NUMBER}"
+        }
+    },
+    "filesystem": {
+        "output_dir": ["PATHWAYS", "{SEQ_CODE}", "{SHOT_CODE}"],
+        "version_convention": {
+            "Blender Files": {
+                "parent_dir": ["3D", "BlenderFiles"],
+                "version_dir": null,
+                "file": "{SHOT_CODE}_BLN_v{VERSION_NUMBER}",
+                "file_ext": ["blend"],
+                "original": "file",
+                "proxy": null
+            },
+            "Blender Renders": {
+                "parent_dir": ["3D", "BlenderRenders"],
+                "version_dir": "BRN_v{VERSION_NUMBER}",
+                "image": "{SHOT_CODE}_BRN_v{VERSION_NUMBER}_{FRAME_NUMBER}",
+                "movie": "{SHOT_CODE}_BRN_v{VERSION_NUMBER}",
+                "image_ext": ["exr"],
+                "movie_ext": ["mov", "mp4"],
+                "original": "image",
+                "proxy": "movie"
+            },
+            "Camera Animation": {
+                "parent_dir": ["3D", "BlenderRenders"],
+                "version_dir": "CAM_v{VERSION_NUMBER}",
+                "image": "{SHOT_CODE}_CAM_v{VERSION_NUMBER}_{FRAME_NUMBER}",
+                "movie": "{SHOT_CODE}_CAM_v{VERSION_NUMBER}",
+                "image_ext": ["exr"],
+                "movie_ext": ["mov", "mp4"],
+                "original": "image",
+                "proxy": "movie"
+            },
+            "Camera Tracking": {
+                "parent_dir": ["3D", "BlenderRenders"],
+                "version_dir": "TRK_v{VERSION_NUMBER}",
+                "image": "{SHOT_CODE}_TRK_v{VERSION_NUMBER}_{FRAME_NUMBER}",
+                "movie": "{SHOT_CODE}_TRK_v{VERSION_NUMBER}",
+                "image_ext": ["exr"],
+                "movie_ext": ["mov", "mp4"],
+                "original": "image",
+                "proxy": "movie"
+            },
+            "CG Relight": {
+                "parent_dir": ["3D", "BlenderRenders"],
+                "version_dir": "CGR_v{VERSION_NUMBER}",
+                "image": "{SHOT_CODE}_CGR_v{VERSION_NUMBER}_{FRAME_NUMBER}",
+                "movie": "{SHOT_CODE}_CGR_v{VERSION_NUMBER}",
+                "image_ext": ["exr"],
+                "movie_ext": ["mov", "mp4"],
+                "original": "image",
+                "proxy": "movie"
+            },
+            "Comp": {
+                "parent_dir": ["COMP"],
+                "version_dir": "CMP_v{VERSION_NUMBER}",
+                "image": "{SHOT_CODE}_CMP_v{VERSION_NUMBER}_{FRAME_NUMBER}",
+                "movie": "{SHOT_CODE}_CMP_v{VERSION_NUMBER}",
+                "image_ext": ["exr"],
+                "movie_ext": ["mov", "mp4"],
+                "original": "image",
+                "proxy": "movie"
+            },
+            "Generate Blender Ref": {
+                "parent_dir": ["3D", "BlenderRenders"],
+                "version_dir": "BRF_v{VERSION_NUMBER}",
+                "image": "{SHOT_CODE}_BRF_v{VERSION_NUMBER}_{FRAME_NUMBER}",
+                "movie": "{SHOT_CODE}_BRF_v{VERSION_NUMBER}",
+                "image_ext": ["exr"],
+                "movie_ext": ["mov", "mp4"],
+                "original": "image",
+                "proxy": "movie"
+            },
+            "Generate Image": {
+                "parent_dir": ["Stills"],
+                "version_dir": null,
+                "image": "{SHOT_CODE}_IMG_v{VERSION_NUMBER}",
+                "image_ext": ["png", "jpg", "jpeg"],
+                "original": "image",
+                "proxy": null
+            },
+            "Generate Video": {
+                "parent_dir": ["Videos"],
+                "version_dir": null,
+                "movie": "{SHOT_CODE}_VID_v{VERSION_NUMBER}",
+                "movie_ext": ["mov", "mp4"],
+                "original": "movie",
+                "proxy": null
+            },
+            "Slap Comp": {
+                "parent_dir": ["3D", "BlenderRenders"],
+                "version_dir": "SLP_v{VERSION_NUMBER}",
+                "image": "{SHOT_CODE}_SLP_v{VERSION_NUMBER}_{FRAME_NUMBER}",
+                "movie": "{SHOT_CODE}_SLP_v{VERSION_NUMBER}",
+                "image_ext": ["exr"],
+                "movie_ext": ["mov", "mp4"],
+                "original": "image",
+                "proxy": "movie"
+            },
+            "Upres": {
+                "parent_dir": ["UpRes"],
+                "version_dir": "_v{VERSION_NUMBER}",
+                "image": "{SHOT_CODE}_UPR_v{VERSION_NUMBER}_{FRAME_NUMBER}",
+                "image_ext": ["tiff"],
+                "original": "image",
+                "proxy": null
+            }
+        }
+    }
+}

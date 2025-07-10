@@ -1,47 +1,9 @@
-import getpass
-import os
-from pathlib import Path
-import re
 import threading
 import requests
-import json
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
-def get_next_version_number(version_code):
-    possible_version_number = version_code.split("_")[-1]
-    if possible_version_number.startswith("v"):
-        possible_version_number = possible_version_number[1:]
-    if len(possible_version_number) == 3 and possible_version_number.isdigit():
-        # Convert to integer, add 1, and format back to 3 digits
-        next_version = int(possible_version_number) + 1
-        if next_version > 999:
-            return "999"
-        return f"{next_version:03d}"
-    else:
-        return "001"
-
-def get_user_login(config):
-    # Method 1: get artist id from system username - works on macOS, Linux, and Windows
-    user_login = None
-    try:
-        user_login = getpass.getuser()
-    except Exception:
-        pass
-    
-    # Method 2: Check environment variables
-    if not user_login:
-        for env_var in ['USER', 'LOGNAME', 'USERNAME']:
-            user_login = os.environ.get(env_var)
-            if user_login:
-                break
-    
-    if user_login and user_login in config["user_login_map"]:
-        user_login = config["user_login_map"].get(user_login)
-    else:
-        user_login = None
-    
-    return user_login
+from .config import shotgrid_config, task_names
 
 def authenticate_with_client_credentials(client, config, user_login):
     response = client.post(
@@ -67,15 +29,6 @@ def refresh_tokens(client, config, tokens):
     )
     return response.json()
 
-def format_to_regex(pattern):
-    # Replace {PLACEHOLDER} with .* to match any characters
-    regex_pattern = re.sub(r'\{[^}]+\}', '.*', pattern)
-    # Escape any special regex characters that might be in the pattern
-    regex_pattern = re.escape(regex_pattern)
-    # Replace the escaped .* with actual .* for wildcard matching
-    regex_pattern = regex_pattern.replace('\\.\\*', '.*')
-    return re.compile(regex_pattern)
-
 def create_client():
     client = requests.Session()
     retries = Retry(total=5, backoff_factor=1, status_forcelist=[502, 503, 504])
@@ -85,12 +38,11 @@ def create_client():
     return client
 
 class ShotGrid:
-    def __init__(self, config):
+    def __init__(self, config, user_login):
         self.config = config
-        self.version_convention_regex = format_to_regex(self.config["version_convention"])
+        self.user_login = user_login
         self.client = create_client()
         self._refresh_timer = None
-        self.user_login = get_user_login(self.config)
         self._initial_auth()
 
     def __enter__(self):
@@ -101,10 +53,6 @@ class ShotGrid:
 
     def _initial_auth(self):
         resp_json = authenticate_with_client_credentials(self.client, self.config, self.user_login)
-        if "access_token" not in resp_json:
-            print("Could not authenticate using current user with ShotGrid. Trying with admin credentials.")
-            resp_json = authenticate_with_client_credentials(self.client, self.config, None)
-        
         if "access_token" in resp_json:
             self.tokens = resp_json
             # Set up refresh timer
@@ -141,7 +89,7 @@ class ShotGrid:
 
     def get_shots(self):
         headers = {"Authorization": f"Bearer {self.tokens['access_token']}", "Accept": "application/json"}
-        params = {"filter[project.Project.id]": self.config["project_id"], "filter[tasks.Task.content]": ",".join(self.config["comfyui_task_names"]), "fields": "id,code,project,content"}
+        params = {"filter[project.Project.id]": self.config["project_id"], "filter[tasks.Task.content]": ",".join(task_names), "fields": "id,code,project,content"}
         response = self.client.get(f"{self.config['server_url']}/api/v1.1/entity/Shot", headers=headers, params=params)
         sg_shots = response.json()
         if "errors" in sg_shots:
@@ -192,33 +140,39 @@ class ShotGrid:
         else:
             return []
     
-    def get_versions(self, shot_code):
-        headers = {"Authorization": f"Bearer {self.tokens['access_token']}", "Accept": "application/json"}
-        params = {"filter[project.Project.id]": self.config["project_id"], "filter[entity.Shot.code]": shot_code, "fields": "id,code,entity.Shot.id"}
-        params["sort"] = "-code"
-        response = self.client.get(f"{self.config['server_url']}/api/v1.1/entity/Version", headers=headers, params=params)
-        sg_versions = response.json()
-        if "errors" in sg_versions:
-            if response.status_code == 401:
-                self.cleanup()
-                self._initial_auth()
-                return self.get_versions(shot_code)
-            else:
-                raise Exception("Error getting versions from ShotGrid")
-        if "data" in sg_versions and len(sg_versions["data"]) > 0:
-            sg_versions = sg_versions["data"]
-            versions = [version for version in sg_versions if self.version_convention_regex.match(version["attributes"]["code"])]
-            return versions
-        else:
-            return []
+    # def get_versions(self, shot_code):
+    #     headers = {"Authorization": f"Bearer {self.tokens['access_token']}", "Accept": "application/json"}
+    #     params = {"filter[project.Project.id]": self.config["project_id"], "filter[entity.Shot.code]": shot_code, "fields": "id,code,entity.Shot.id"}
+    #     params["sort"] = "-code"
+    #     response = self.client.get(f"{self.config['server_url']}/api/v1.1/entity/Version", headers=headers, params=params)
+    #     sg_versions = response.json()
+    #     if "errors" in sg_versions:
+    #         if response.status_code == 401:
+    #             self.cleanup()
+    #             self._initial_auth()
+    #             return self.get_versions(shot_code)
+    #         else:
+    #             raise Exception("Error getting versions from ShotGrid")
+    #     if "data" in sg_versions and len(sg_versions["data"]) > 0:
+    #         sg_versions = sg_versions["data"]
+    #         versions = [version for version in sg_versions if self.version_convention_regex.match(version["attributes"]["code"])]
+    #         return versions
+    #     else:
+    #         return []
     
-    def get_version_code(self, shot_code):
-        versions = self.get_versions(shot_code)
-        if len(versions) > 0:
-            version_number = get_next_version_number(versions[0]["attributes"]["code"])
-        else:
-            version_number = "001"
-        return self.format_version_code(version_number, shot_code)
+    def get_version_code(self, shot_code, task_name, version_number):
+        return self.config["version_convention"][task_name].format(SHOT_CODE=shot_code, VERSION_NUMBER=version_number)
+    
+    def get_artists(self):
+        headers = {"Authorization": f"Bearer {self.tokens['access_token']}", "Accept": "application/json"}
+        params = {
+            "fields": "firstname,lastname,login",
+            "filter[projects.Project.id]": self.config["project_id"],
+            "sort": "login"
+        }
+        response = self.client.get(f"{self.config['server_url']}/api/v1.1/entity/HumanUser", headers=headers, params=params)
+        data = response.json()
+        return data.get("data", [])
     
     def add_version(self, version_code, shot_id, task_id, fields):
         params = {
@@ -252,9 +206,10 @@ class ShotGrid:
                 raise Exception("Error requesting file upload to ShotGrid")
         return response.json()
     
-    def upload_file(self, upload_link, file_bytes):
-        headers = {"Accept": "application/json", "Content-Type": "image/png"}
-        response = self.client.put(upload_link, headers=headers, data=file_bytes)
+    def upload_file(self, upload_link, file_path, mime_type):
+        headers = {"Accept": "application/json", "Content-Type": mime_type}
+        with open(file_path, "rb") as f:
+            response = self.client.put(upload_link, headers=headers, data=f)
         if response.status_code != 200:
             raise Exception("Error uploading file to ShotGrid")
 
@@ -272,26 +227,15 @@ class ShotGrid:
                 return self.complete_file_upload(file_upload_data)
             else:
                 raise Exception("Error completing file upload to ShotGrid")
-    
-    def format_version_code(self, version_number, shot_code):
-        if self.config.get("version_convention"):
-            return self.config["version_convention"].format(SHOT_CODE=shot_code, VERSION_NUMBER=version_number)
-        else:
-            return f"{shot_code}_v{version_number}"
 
-config_path = os.path.join(Path(__file__).parent.parent, "shotgrid_config.json")
-if not os.path.exists(config_path):
-    raise Exception("shotgrid_config.json not found")
-with open(config_path, "r") as f:
-    shotgrid_config = json.load(f)
-
-sg = ShotGrid(shotgrid_config)
+sg = ShotGrid(shotgrid_config, None)
 sg_shots = sg.get_shots()
 shots = {shot["attributes"]["code"]: shot for shot in sg_shots if "attributes" in shot and "code" in shot["attributes"]}
-tasks = {}
-for shot_code in shots.keys():
-    tasks[shot_code] = {}
-    for task_name in shotgrid_config["comfyui_task_names"]:
-        sg_tasks = sg.get_tasks(shot_code, task_name)
-        if len(sg_tasks) > 0:
-            tasks[shot_code][task_name] = sg_tasks[0]
+# tasks = {}
+# for shot_code in shots.keys():
+#     tasks[shot_code] = {}
+#     for task_name in task_names:
+#         sg_tasks = sg.get_tasks(shot_code, task_name)
+#         if len(sg_tasks) > 0:
+#             tasks[shot_code][task_name] = sg_tasks[0]
+artist_logins = [artist["attributes"]["login"] for artist in sg.get_artists()]
