@@ -3,8 +3,8 @@
     "shotgrid": {
         "project_id": 254,
         "server_url": "https://etc-europa.shotgrid.autodesk.com",
-        "client_id": "api_admin",
-        "client_secret": "shc)hodTfgvngspedkkk9nome",
+        "client_id": "pub_api_admin",
+        "client_secret": "SECRET GOES HERE",
         "version_convention": {
             "Blender Renders": "{SHOT_CODE}_BRN_v{VERSION_NUMBER}",
             "Camera Animation": "{SHOT_CODE}_CAM_v{VERSION_NUMBER}",
@@ -24,7 +24,7 @@
             "Blender Files": {
                 "parent_dir": ["3D", "BlenderFiles"],
                 "version_dir": null,
-                "file": "{SHOT_CODE}_BLN_v{VERSION_NUMBER}",
+                "file": "{SHOT_CODE}_v{VERSION_NUMBER}",
                 "file_ext": ["blend"],
                 "original": "file",
                 "proxy": null

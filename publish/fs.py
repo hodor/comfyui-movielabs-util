@@ -76,6 +76,8 @@ def match_extension(task_name, is_original, file_path):
     })
     if type == "image":
         supported_extensions = filesystem_config["version_convention"][task_name]["image_ext"]
+    elif type == "file":
+        supported_extensions = filesystem_config["version_convention"][task_name]["file_ext"]
     else:
         supported_extensions = filesystem_config["version_convention"][task_name]["movie_ext"]
     _, ext = os.path.splitext(file_path)
@@ -115,17 +117,17 @@ def ensure_exr_sequence(dir_path):
 def mime_type_from_file_path(file_path):
     _, ext = os.path.splitext(file_path)
     ext = ext[1:].lower()
-    if ext is "mp4":
+    if ext == "mp4":
         return "video/mp4"
-    elif ext is "mov":
+    elif ext == "mov":
         return "video/quicktime"
-    elif ext is "png":
+    elif ext == "png":
         return "image/png"
-    elif ext is "jpg":
+    elif ext == "jpg":
         return "image/jpeg"
-    elif ext is "jpeg":
+    elif ext == "jpeg":
         return "image/jpeg"
-    elif ext is "tiff":
+    elif ext == "tiff":
         return "image/tiff"
     else:
         return "application/octet-stream"
