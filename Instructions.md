@@ -1,1 +1,0 @@
-# ComfyUI Guidance for Artists

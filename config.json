@@ -30,7 +30,7 @@
                 "proxy": null
             },
             "Blender Renders": {
-                "parent_dir": ["3D", "BlenderRenders"],
+                "parent_dir": ["3D", "BlenderRender"],
                 "version_dir": "BRN_v{VERSION_NUMBER}",
                 "image": "{SHOT_CODE}_BRN_v{VERSION_NUMBER}_{FRAME_NUMBER}",
                 "movie": "{SHOT_CODE}_BRN_v{VERSION_NUMBER}",
@@ -40,7 +40,7 @@
                 "proxy": "movie"
             },
             "Camera Animation": {
-                "parent_dir": ["3D", "BlenderRenders"],
+                "parent_dir": ["3D", "BlenderRender"],
                 "version_dir": "CAM_v{VERSION_NUMBER}",
                 "image": "{SHOT_CODE}_CAM_v{VERSION_NUMBER}_{FRAME_NUMBER}",
                 "movie": "{SHOT_CODE}_CAM_v{VERSION_NUMBER}",
@@ -50,7 +50,7 @@
                 "proxy": "movie"
             },
             "Camera Tracking": {
-                "parent_dir": ["3D", "BlenderRenders"],
+                "parent_dir": ["3D", "BlenderRender"],
                 "version_dir": "TRK_v{VERSION_NUMBER}",
                 "image": "{SHOT_CODE}_TRK_v{VERSION_NUMBER}_{FRAME_NUMBER}",
                 "movie": "{SHOT_CODE}_TRK_v{VERSION_NUMBER}",
@@ -60,7 +60,7 @@
                 "proxy": "movie"
             },
             "CG Relight": {
-                "parent_dir": ["3D", "BlenderRenders"],
+                "parent_dir": ["3D", "BlenderRender"],
                 "version_dir": "CGR_v{VERSION_NUMBER}",
                 "image": "{SHOT_CODE}_CGR_v{VERSION_NUMBER}_{FRAME_NUMBER}",
                 "movie": "{SHOT_CODE}_CGR_v{VERSION_NUMBER}",
@@ -80,7 +80,7 @@
                 "proxy": "movie"
             },
             "Generate Blender Ref": {
-                "parent_dir": ["3D", "BlenderRenders"],
+                "parent_dir": ["3D", "BlenderRender"],
                 "version_dir": "BRF_v{VERSION_NUMBER}",
                 "image": "{SHOT_CODE}_BRF_v{VERSION_NUMBER}_{FRAME_NUMBER}",
                 "movie": "{SHOT_CODE}_BRF_v{VERSION_NUMBER}",
@@ -90,7 +90,7 @@
                 "proxy": "movie"
             },
             "Generate Image": {
-                "parent_dir": ["Stills"],
+                "parent_dir": ["AI_Gen", "Stills"],
                 "version_dir": null,
                 "image": "{SHOT_CODE}_IMG_v{VERSION_NUMBER}",
                 "image_ext": ["png", "jpg", "jpeg"],
@@ -98,7 +98,7 @@
                 "proxy": null
             },
             "Generate Video": {
-                "parent_dir": ["Videos"],
+                "parent_dir": ["AI_Gen", "Video"],
                 "version_dir": null,
                 "movie": "{SHOT_CODE}_VID_v{VERSION_NUMBER}",
                 "movie_ext": ["mov", "mp4"],
@@ -106,7 +106,7 @@
                 "proxy": null
             },
             "Slap Comp": {
-                "parent_dir": ["3D", "BlenderRenders"],
+                "parent_dir": ["3D", "BlenderRender"],
                 "version_dir": "SLP_v{VERSION_NUMBER}",
                 "image": "{SHOT_CODE}_SLP_v{VERSION_NUMBER}_{FRAME_NUMBER}",
                 "movie": "{SHOT_CODE}_SLP_v{VERSION_NUMBER}",
