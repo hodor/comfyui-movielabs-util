@@ -33,7 +33,7 @@ The Publish Asset node is designed to be used in the following way:
 
 The node will publish the asset to ShotGrid and write the original file to the file system, after performing a variety of checks and following the naming conventions.
 
-#### Idiot Proofing
+#### Validation Checks
 
 1. Artist login: By default, a blank artist login is selected. This will make the artist specifically select their login (as opposed to using the default login).
 2. Shot code: The shot code list is populated from ShotGrid. So bogus shot codes will not be presented at all.
@@ -67,7 +67,7 @@ The Publish Blender node is designed to be used in the following way:
 
 The node will publish the blender file to the file system, after performing a variety of checks and following the naming conventions.
 
-#### Idiot Proofing
+#### Validation Checks
 
 1. Shot code: The shot code list is populated from ShotGrid. So bogus shot codes will not be presented at all.
 2. Blender file: The specified file is verified to exist.
