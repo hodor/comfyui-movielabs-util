@@ -2,6 +2,31 @@ from .shotgrid import shots, artist_logins, ShotGrid
 from .config import shotgrid_config, task_names
 from .fs import create_task_version
 
+# Add this helper at the top of the file
+def sanitize_path(path):
+    if path is None:
+        return path
+    path = path.strip()
+    if (path.startswith('"') and path.endswith('"')) or (path.startswith("'") and path.endswith("'")):
+        return path[1:-1]
+    return path
+
+# When processing inputs (for example, inside whatever method is handling the node execution)
+original_asset_file_path = sanitize_path(original_asset_file_path)
+proxy_asset_file_path = sanitize_path(proxy_asset_file_path)
+
+# For EXR sequence handling, update logic to allow folder input:
+import os
+
+# Instead of always using os.path.dirname(original_asset_file_path)
+if os.path.isdir(original_asset_file_path):
+    exr_sequence_dir = original_asset_file_path
+else:
+    exr_sequence_dir = os.path.dirname(original_asset_file_path)
+
+# Pass exr_sequence_dir to ensure_exr_sequence
+exr_files = ensure_exr_sequence(exr_sequence_dir)
+
 
 class PublishAsset:
     def __init__(self):
