@@ -19,7 +19,7 @@
         }
     },
     "filesystem": {
-        "output_dir": ["PATHWAYS", "{SEQ_CODE}", "{SHOT_CODE}"],
+        "output_dir": ["F:", "PATHWAYS", "{SEQ_CODE}", "{SHOT_CODE}"],
         "version_convention": {
             "Blender Files": {
                 "parent_dir": ["3D", "BlenderFiles"],
