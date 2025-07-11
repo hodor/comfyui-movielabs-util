@@ -4,6 +4,18 @@ import shutil
 
 from .config import filesystem_config
 
+# If you call ensure_exr_sequence from this file, the logic already expects a directory.
+# No changes needed here, but make sure your publish_asset.py uses the updated exr_sequence_dir logic as above.
+
+# Optionally, you can add the sanitize_path function here if paths are used directly.
+def sanitize_path(path):
+    if path is None:
+        return path
+    path = path.strip()
+    if (path.startswith('"') and path.endswith('"')) or (path.startswith("'") and path.endswith("'")):
+        return path[1:-1]
+    return path
+
 def get_output_dir(shot_code):
     output_dir = filesystem_config["output_dir"]
     seq_code = shot_code[:-4]
