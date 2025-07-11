@@ -1,4 +1,4 @@
-```python name=publish/publish_asset.py
+python name=publish/publish_asset.py
 from .shotgrid import shots, artist_logins, ShotGrid
 from .config import shotgrid_config, task_names
 from .fs import create_task_version
