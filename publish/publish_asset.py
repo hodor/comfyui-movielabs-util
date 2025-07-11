@@ -3,7 +3,6 @@ from .shotgrid import shots, artist_logins, ShotGrid
 from .config import shotgrid_config, task_names
 from .fs import create_task_version
 
-# Helper function to clean up file paths
 def sanitize_path(path):
     if path is None:
         return path
