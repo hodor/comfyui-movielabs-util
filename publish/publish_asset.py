@@ -24,17 +24,6 @@ def get_first_exr_from_folder(folder_path):
         raise FileNotFoundError(f"No EXR files found in folder: {folder_path}")
     return os.path.join(folder_path, exr_files[0])
 
-# Usage in node:
-if os.path.isdir(original_asset_file_path):
-    # User gave a folder
-    first_exr_path = get_first_exr_from_folder(original_asset_file_path)
-    # You can use first_exr_path for further EXR sequence logic
-    exr_sequence_dir = original_asset_file_path
-else:
-    # User gave a file
-    first_exr_path = original_asset_file_path
-    exr_sequence_dir = os.path.dirname(original_asset_file_path)
-
 
 # Instead of always using os.path.dirname(original_asset_file_path)
 if os.path.isdir(original_asset_file_path):
