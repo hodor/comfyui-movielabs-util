@@ -8,7 +8,7 @@ def sanitize_path(path):
     if path is None:
         return path
     path = path.strip()
-    if (path.startswith('"') and path.endsWith('"')) or (path.startswith("'") and path.endswith("'")):
+    if (path.startswith('"') and path.endswith('"')) or (path.startswith("'") and path.endswith("'")):
         return path[1:-1]
     return path
 
