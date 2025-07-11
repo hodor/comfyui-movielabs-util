@@ -5,7 +5,7 @@ This project implements two custom nodes for the ComfyUI to enable the publishin
 1. PublishAsset: This node publishes an asset to the filesystem and ShotGrid.
 2. PublishBlender: This node publishes a Blender file to the filesystem.
 
-An extensive set of validation checks, automatic versioning numbering, automatic directory creation, and naming conventions are implemented to meet the production requirements and to ensure that the file system is kept in sync with ShotGrid.
+An extensive set of validation checks, automatic version numbering, automatic directory creation, and naming conventions are implemented to meet the production requirements and to ensure that the file system is kept in sync with ShotGrid.
 
 ## Important Notes
 
