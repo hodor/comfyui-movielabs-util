@@ -18,6 +18,24 @@ proxy_asset_file_path = sanitize_path(proxy_asset_file_path)
 # For EXR sequence handling, update logic to allow folder input:
 import os
 
+def get_first_exr_from_folder(folder_path):
+    exr_files = [f for f in sorted(os.listdir(folder_path)) if f.lower().endswith('.exr')]
+    if not exr_files:
+        raise FileNotFoundError(f"No EXR files found in folder: {folder_path}")
+    return os.path.join(folder_path, exr_files[0])
+
+# Usage in node:
+if os.path.isdir(original_asset_file_path):
+    # User gave a folder
+    first_exr_path = get_first_exr_from_folder(original_asset_file_path)
+    # You can use first_exr_path for further EXR sequence logic
+    exr_sequence_dir = original_asset_file_path
+else:
+    # User gave a file
+    first_exr_path = original_asset_file_path
+    exr_sequence_dir = os.path.dirname(original_asset_file_path)
+
+
 # Instead of always using os.path.dirname(original_asset_file_path)
 if os.path.isdir(original_asset_file_path):
     exr_sequence_dir = original_asset_file_path
