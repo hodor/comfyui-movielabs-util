@@ -1,18 +1,16 @@
-python name=publish/publish_asset.py
+import os
 from .shotgrid import shots, artist_logins, ShotGrid
 from .config import shotgrid_config, task_names
 from .fs import create_task_version
 
-# Add this helper at the top of the file
+# Helper function to clean up file paths
 def sanitize_path(path):
     if path is None:
         return path
     path = path.strip()
-    if (path.startswith('"') and path.endswith('"')) or (path.startswith("'") and path.endswith("'")):
+    if (path.startswith('"') and path.endsWith('"')) or (path.startswith("'") and path.endswith("'")):
         return path[1:-1]
     return path
-
-import os
 
 class PublishAsset:
     RETURN_TYPES = ()
@@ -28,56 +26,64 @@ class PublishAsset:
                 "artist_login": (artist_logins_with_blank,),
                 "shot_code": (list(shots.keys()),),
                 "task_name": (task_names,),
-                "original_asset_file_path": ("STRING", {"default": "", "label": "Original Asset File Path", "tooltip": "Path to the original asset file"}),
+                "original_asset_file_path": ("STRING", {"default": "", "label": "Original Asset File Path"}),
             },
             "optional": {
-                "proxy_asset_file_path": ("STRING", {"default": "", "label": "Proxy Asset File Path", "tooltip": "Path to the proxy asset file"}),
-                "notes": ("STRING", {"default": "", "label": "Notes", "tooltip": "Notes to add to the version in ShotGrid"}),
+                "proxy_asset_file_path": ("STRING", {"default": "", "label": "Proxy Asset File Path"}),
+                "notes": ("STRING", {"default": "", "multiline": True, "label": "Notes"}),
             },
         }
 
-    def publish_asset(self, **kwargs):
-        artist_login = kwargs["artist_login"]
-        if artist_login == "":
+    def publish_asset(self, artist_login, shot_code, task_name, original_asset_file_path, proxy_asset_file_path=None, notes=""):
+        if not artist_login:
             raise Exception("Select your artist login")
         sg = ShotGrid(shotgrid_config, artist_login)
 
-        shot_code = kwargs["shot_code"]
-        task_name = kwargs["task_name"]
-
         if shot_code not in shots:
             raise Exception(f"Shot {shot_code} not found")
-        
-        sg_tasks = sg.get_tasks(shot_code, task_name)
 
-        if len(sg_tasks) == 0:
+        sg_tasks = sg.get_tasks(shot_code, task_name)
+        if not sg_tasks:
             raise Exception(f"Task {task_name} not found for shot {shot_code}")
 
-        # Sanitize paths only when the input is received, not at the module level!
-        original_asset_file_path = sanitize_path(kwargs["original_asset_file_path"])
-        proxy_asset_file_path = sanitize_path(kwargs.get("proxy_asset_file_path"))
-        notes = kwargs.get("notes", "")
-
-        # For EXR sequence handling, update logic to allow folder input:
-        if os.path.isdir(original_asset_file_path):
-            exr_sequence_dir = original_asset_file_path
+        # Sanitize paths
+        clean_original_path = sanitize_path(original_asset_file_path)
+        clean_proxy_path = sanitize_path(proxy_asset_file_path)
+        
+        # NEW: Logic to handle folder path input for EXR sequences
+        if os.path.isdir(clean_original_path):
+             # If a folder is passed, use it directly
+            final_asset_path = clean_original_path
         else:
-            exr_sequence_dir = os.path.dirname(original_asset_file_path)
+            # If a file is passed, use its parent directory
+            final_asset_path = os.path.dirname(clean_original_path)
 
-        # Pass exr_sequence_dir to ensure_exr_sequence if you need it:
-        # exr_files = ensure_exr_sequence(exr_sequence_dir)
-
-        shot_id = shots[shot_code]["id"]
-        task_id = sg_tasks[0]["id"]
-
-        shotgrid_data = create_task_version(shot_code, task_name, original_asset_file_path, proxy_asset_file_path)
+        # --- CORE LOGIC ---
+        shotgrid_data = create_task_version(shot_code, task_name, final_asset_path, clean_proxy_path)
         version_code = sg.get_version_code(shot_code, task_name, shotgrid_data["version_number"])
+        
         shotgrid_fields = {
             "sg_notes": notes,
             "sg_path_to_movie": shotgrid_data["sg_path_to_movie"],
             "sg_path_to_frames": shotgrid_data["sg_path_to_frames"],
         }
-        # Add additional publish logic as needed
+        
+        shot_id = shots[shot_code]["id"]
+        task_id = sg_tasks[0]["id"]
+        
+        # 1. Add version to ShotGrid
+        sg_version = sg.add_version(version_code, shot_id, task_id, shotgrid_fields)
+        
+        # 2. Request upload URL
+        file_upload_data = sg.request_file_upload(sg_version["id"], "sg_uploaded_movie", shotgrid_fields["sg_path_to_movie"])
+        
+        # 3. Upload the file
+        sg.upload_file(file_upload_data["links"]["upload"], shotgrid_fields["sg_path_to_movie"], shotgrid_data["mime_type"])
+        
+        # 4. Mark upload as complete
+        sg.complete_file_upload(file_upload_data)
+        
+        return ()
 
 # Node mappings for ComfyUI
 NODE_CLASS_MAPPINGS = {
