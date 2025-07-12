@@ -4,6 +4,18 @@ import shutil
 
 from .config import filesystem_config
 
+# If you call ensure_exr_sequence from this file, the logic already expects a directory.
+# No changes needed here, but make sure your publish_asset.py uses the updated exr_sequence_dir logic as above.
+
+# Optionally, you can add the sanitize_path function here if paths are used directly.
+def sanitize_path(path):
+    if path is None:
+        return path
+    path = path.strip()
+    if (path.startswith('"') and path.endswith('"')) or (path.startswith("'") and path.endswith("'")):
+        return path[1:-1]
+    return path
+
 def get_output_dir(shot_code):
     output_dir = filesystem_config["output_dir"]
     seq_code = shot_code[:-4]
@@ -101,19 +113,38 @@ def ensure_exr_sequence(dir_path):
     exr_files = list_exr_files(dir_path)
     if len(exr_files) == 0:
         raise ValueError(f"No exr files found in {dir_path}")
-    if len(exr_files) > 0:
-        frame_numbers = [get_frame_number_from_exr_file(f) for f in exr_files]
-        # ensure all frame numbers are the same length
-        if len(set(len(f) for f in frame_numbers)) > 1:
-            raise ValueError(f"Frame numbers of exr files are not of the same length in {dir_path}")
-        # ensure all frame numbers are consecutive, regardless of starting number
-        frame_numbers_int = [int(f) for f in frame_numbers]
-        start = frame_numbers_int[0]
-        for idx, num in enumerate(frame_numbers_int):
-            if num != start + idx:
-                raise ValueError(f"Frame numbers of exr files are not consecutive in {dir_path}")
-        return {str(int(frame_number) + 1000).zfill(5): os.path.join(dir_path, f) for frame_number, f in zip(frame_numbers, exr_files)}
 
+    frame_numbers = [get_frame_number_from_exr_file(f) for f in exr_files]
+    
+    # Ensure all frame numbers are the same length
+    if len(set(len(f) for f in frame_numbers)) > 1:
+        raise ValueError(f"Frame numbers of exr files are not of the same length in {dir_path}")
+
+    # Ensure all frame numbers are consecutive
+    frame_numbers_int = [int(f) for f in frame_numbers]
+    start = frame_numbers_int[0]
+    for idx, num in enumerate(frame_numbers_int):
+        if num != start + idx:
+            raise ValueError(f"Frame numbers of exr files are not consecutive in {dir_path}")
+            
+    # --- NEW: Logic to enforce start frame of 1001 ---
+    frame_offset = 0 # Default to no offset
+    original_start_frame = frame_numbers_int[0]
+
+    # Check if the start frame is outside the exception range (101-999)
+    if not (100 < original_start_frame < 1000):
+        # If it is, calculate the offset needed to move the start to 1001
+        frame_offset = 1001 - original_start_frame
+        
+    # --- Apply the offset to generate the final frame dictionary ---
+    output_frames = {}
+    for i, original_frame in enumerate(frame_numbers_int):
+        # Calculate the new frame number
+        new_frame = original_frame + frame_offset
+        # Create the new dictionary entry with the corrected frame number
+        output_frames[str(new_frame).zfill(5)] = os.path.join(dir_path, exr_files[i])
+        
+    return output_frames
 def mime_type_from_file_path(file_path):
     _, ext = os.path.splitext(file_path)
     ext = ext[1:].lower()
