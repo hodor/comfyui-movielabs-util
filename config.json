@@ -4,7 +4,7 @@
         "project_id": 254,
         "server_url": "https://etc-europa.shotgrid.autodesk.com",
         "client_id": "pub_api_admin",
-        "client_secret": "SECRET GOES HERE",
+        "secret_file_path": "F:\\COMFYUI WORKFLOWS\\publish-workflow\\secret.txt",
         "version_convention": {
             "Blender Renders": "{SHOT_CODE}_BRN_v{VERSION_NUMBER}",
             "Camera Animation": "{SHOT_CODE}_CAM_v{VERSION_NUMBER}",
