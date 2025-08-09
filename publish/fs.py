@@ -4,8 +4,8 @@ import shutil
 
 from .config import filesystem_config
 
-# If you call ensure_exr_sequence from this file, the logic already expects a directory.
-# No changes needed here, but make sure your publish_asset.py uses the updated exr_sequence_dir logic as above.
+# If you call ensure_image_sequence from this file, the logic already expects a directory.
+# No changes needed here, but make sure your publish_asset.py uses the updated image_sequence_dir logic as above.
 
 # Optionally, you can add the sanitize_path function here if paths are used directly.
 def sanitize_path(path):
@@ -98,34 +98,61 @@ def match_extension(task_name, is_original, file_path):
         raise ValueError(f"Unsupported {kind} file extension: {ext} for {task_name} task. Must be {', '.join(supported_extensions)}")
     return True
 
-def list_exr_files(dir_path):
-    return [f for f in sorted(os.listdir(dir_path)) if f.endswith(".exr") or f.endswith(".EXR")]
+def list_image_sequence_files(dir_path):
+    """List all EXR and PNG files in a directory"""
+    return [f for f in sorted(os.listdir(dir_path)) 
+            if f.lower().endswith((".exr", ".png"))]
 
-def get_frame_number_from_exr_file(file_path):
+def get_frame_number_from_image_file(file_path):
+    """Get the frame number from an image file (EXR or PNG)"""
     # get the last bit of the filename before the extension
     base, _ = os.path.splitext(file_path)
     base = base.rstrip("_")
     frame_number = base.split("_")[-1]
     return frame_number
 
+def get_file_extension_from_sequence(dir_path):
+    """Determine the file extension used in the sequence (EXR or PNG)"""
+    files = list_image_sequence_files(dir_path)
+    if not files:
+        return None
+    
+    # Get the extension of the first file
+    _, ext = os.path.splitext(files[0])
+    ext = ext.lower()
+    
+    # Verify all files have the same extension
+    for f in files:
+        _, f_ext = os.path.splitext(f)
+        if f_ext.lower() != ext:
+            raise ValueError(f"Mixed file extensions found in {dir_path}. All files must be either EXR or PNG.")
+    
+    return ext
 
-def ensure_exr_sequence(dir_path):
-    exr_files = list_exr_files(dir_path)
-    if len(exr_files) == 0:
-        raise ValueError(f"No exr files found in {dir_path}")
+def ensure_image_sequence(dir_path):
+    """Ensure a valid image sequence exists (EXR or PNG files)"""
+    image_files = list_image_sequence_files(dir_path)
+    if len(image_files) == 0:
+        raise ValueError(f"No EXR or PNG files found in {dir_path}")
 
-    frame_numbers = [get_frame_number_from_exr_file(f) for f in exr_files]
+    # Verify consistent extension
+    file_ext = get_file_extension_from_sequence(dir_path)
+    
+    # Filter files to only include those with the detected extension
+    image_files = [f for f in image_files if f.lower().endswith(file_ext)]
+
+    frame_numbers = [get_frame_number_from_image_file(f) for f in image_files]
     
     # Ensure all frame numbers are the same length
     if len(set(len(f) for f in frame_numbers)) > 1:
-        raise ValueError(f"Frame numbers of exr files are not of the same length in {dir_path}")
+        raise ValueError(f"Frame numbers of image files are not of the same length in {dir_path}")
 
     # Ensure all frame numbers are consecutive
     frame_numbers_int = [int(f) for f in frame_numbers]
     start = frame_numbers_int[0]
     for idx, num in enumerate(frame_numbers_int):
         if num != start + idx:
-            raise ValueError(f"Frame numbers of exr files are not consecutive in {dir_path}")
+            raise ValueError(f"Frame numbers of image files are not consecutive in {dir_path}")
             
     # --- NEW: Logic to enforce start frame of 1001 ---
     frame_offset = 0 # Default to no offset
@@ -142,9 +169,10 @@ def ensure_exr_sequence(dir_path):
         # Calculate the new frame number
         new_frame = original_frame + frame_offset
         # Create the new dictionary entry with the corrected frame number
-        output_frames[str(new_frame).zfill(5)] = os.path.join(dir_path, exr_files[i])
+        output_frames[str(new_frame).zfill(5)] = os.path.join(dir_path, image_files[i])
         
-    return output_frames
+    return output_frames, file_ext
+
 def mime_type_from_file_path(file_path):
     _, ext = os.path.splitext(file_path)
     ext = ext[1:].lower()
@@ -167,8 +195,18 @@ def create_task_version(shot_code, task_name, original_file_path, proxy_file_pat
     if original_file_path is None or not os.path.exists(original_file_path):
         raise FileNotFoundError(f"Original {original_file_path} not found")
     match_extension(task_name, True, original_file_path)
-    exr_task = "exr" in filesystem_config["version_convention"][task_name]["image_ext"] if "image_ext" in filesystem_config["version_convention"][task_name] else False
-    exr_files = ensure_exr_sequence(os.path.dirname(original_file_path)) if exr_task else None
+    
+    # Check if this task expects image sequences (EXR or PNG)
+    image_sequence_task = False
+    if "image_ext" in filesystem_config["version_convention"][task_name]:
+        supported_exts = filesystem_config["version_convention"][task_name]["image_ext"]
+        # Check if either exr or png is in the supported extensions
+        image_sequence_task = any(ext in supported_exts for ext in ["exr", "png"])
+    
+    image_files = None
+    detected_ext = None
+    if image_sequence_task:
+        image_files, detected_ext = ensure_image_sequence(os.path.dirname(original_file_path))
         
     proxy_necessary = filesystem_config["version_convention"][task_name]["proxy"] is not None
     if proxy_necessary and (proxy_file_path is None or not os.path.exists(proxy_file_path)):
@@ -182,12 +220,13 @@ def create_task_version(shot_code, task_name, original_file_path, proxy_file_pat
     version_dir = get_version_dir(task_name, task_dir, new_version_number)
 
     output_file = None
-    exr_dir = None
+    image_dir = None
 
-    if exr_task:
-        exr_dir = version_dir
-        for frame_number, file_path in exr_files.items():
-            file_name = get_file_name("image", shot_code, task_name, new_version_number, frame_number) + ".exr"
+    if image_sequence_task:
+        image_dir = version_dir
+        for frame_number, file_path in image_files.items():
+            # Use the detected extension for the output file
+            file_name = get_file_name("image", shot_code, task_name, new_version_number, frame_number) + detected_ext
             shutil.copy(file_path, os.path.join(version_dir, file_name))
     else:
         type = filesystem_config["version_convention"][task_name]["original"]
@@ -206,8 +245,8 @@ def create_task_version(shot_code, task_name, original_file_path, proxy_file_pat
         "shot_code": shot_code,
         "task_name": task_name,
         "sg_path_to_movie": output_file,
-        "sg_path_to_frames": exr_dir,
-        "mime_type": mime_type_from_file_path(output_file),
+        "sg_path_to_frames": image_dir,
+        "mime_type": mime_type_from_file_path(output_file) if output_file else None,
     }
 
     return shotgrid_data
@@ -229,4 +268,3 @@ def create_blender_version(shot_code, original_file_path):
     file_name = get_file_name("file", shot_code, "Blender Files", new_version_number) + os.path.splitext(original_file_path)[1].lower()
     output_file = os.path.join(version_dir, file_name)
     shutil.copy(original_file_path, output_file)
-    
