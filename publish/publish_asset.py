@@ -89,14 +89,16 @@ class PublishAsset:
         # 1. Add version to ShotGrid
         sg_version = sg.add_version(version_code, shot_id, task_id, shotgrid_fields)
         
-        # 2. Request upload URL
-        file_upload_data = sg.request_file_upload(sg_version["id"], "sg_uploaded_movie", shotgrid_fields["sg_path_to_movie"])
-        
-        # 3. Upload the file
-        sg.upload_file(file_upload_data["links"]["upload"], shotgrid_fields["sg_path_to_movie"], shotgrid_data["mime_type"])
-        
-        # 4. Mark upload as complete
-        sg.complete_file_upload(file_upload_data)
+        # Only upload movie if there is one (i.e., if proxy was provided)
+        if shotgrid_fields["sg_path_to_movie"] is not None:
+            # 2. Request upload URL
+            file_upload_data = sg.request_file_upload(sg_version["id"], "sg_uploaded_movie", shotgrid_fields["sg_path_to_movie"])
+            
+            # 3. Upload the file
+            sg.upload_file(file_upload_data["links"]["upload"], shotgrid_fields["sg_path_to_movie"], shotgrid_data["mime_type"])
+            
+            # 4. Mark upload as complete
+            sg.complete_file_upload(file_upload_data)
         
         return ()
 
