@@ -87,7 +87,7 @@
                 "image_ext": ["exr"],
                 "movie_ext": ["mov", "mp4"],
                 "original": "image",
-                "proxy": "movie"
+                "proxy": null
             },
             "Generate Image": {
                 "parent_dir": ["AI_Gen", "Stills"],
