@@ -51,19 +51,26 @@ class PublishAsset:
         
         final_asset_path = None
 
-        # Logic to find an EXR file if a folder is given
+        # Logic to find  EXR or PNG file if a folder is given
         if os.path.isdir(clean_original_path):
-            # If a folder is passed, search inside it for the first .exr file
-            print(f"Searching for .exr files in folder: {clean_original_path}")
-            for filename in sorted(os.listdir(clean_original_path)):
-                if filename.lower().endswith('.exr'):
-                    final_asset_path = os.path.join(clean_original_path, filename)
-                    print(f"Found EXR file: {final_asset_path}")
-                    break # Stop after finding the first one
+            print(f"Searching for .exr/.png files in folder: {clean_original_path}")
+            # Prefer EXR, then PNG
+            exts_priority = [".exr", ".png"]
+            files = sorted(os.listdir(clean_original_path))
+        
+            for ext in exts_priority:
+                matches = [f for f in files if f.lower().endswith(ext)]
+                if matches:
+                    final_asset_path = os.path.join(clean_original_path, matches[0])
+                    print(f"Found file: {final_asset_path}")
+                    break
+        
             if not final_asset_path:
-                raise FileNotFoundError(f"No .exr files found in the specified folder: {clean_original_path}")
+                raise FileNotFoundError(
+                    f"No .exr or .png files found in the specified folder: {clean_original_path}"
+                )
         else:
-            # If a file path is passed directly, use it
+            # If a file path is passed directly, use it (supports .exr or .png)
             final_asset_path = clean_original_path
         
         # Core publishing logic
